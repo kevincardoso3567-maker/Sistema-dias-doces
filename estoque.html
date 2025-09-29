@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciamento de Estoque </title>
+    
+    <link rel="stylesheet" href="estoque.css">
+</head>
+<body>
+
+    <header class="header-vendas">
+        <img src="logo-preta.png" alt="Logo da Empresa" class="header-logo-vendas">
+        
+        <h1>Estoque </h1>
+        
+        <a href="inicio.html" class="btn-voltar">Voltar </a>
+    </header>
+
+    <main class="container">
+        
+        <div class="card vendas-card">
+            <h2>Adicionar Registro de Saída</h2>
+            
+            <form id="formAdicionarVenda" class="form-entrada">
+                <div class="input-row-vendas">
+
+                    <div class="input-group-vendas" style="flex-basis: 100%;">
+                        <label for="vendaCliente">Descrição do Item:</label>
+                        <input 
+                            type="text" 
+                            id="vendaCliente" 
+                            placeholder="Ex: Caixa de leite" 
+                            required>
+                    </div>
+                    
+                    <div class="input-group-vendas">
+                        <label for="vendaData">Data:</label>
+                        <input type="date" id="vendaData" required>
+                    </div>
+
+                    <div class="input-group-vendas">
+                        <label for="vendaMes">Mês:</label>
+                        <select id="vendaMes" required>
+                            <option value="" disabled selected>Selecione o Mês</option>
+                            <option value="1">Janeiro</option>
+                            <option value="2">Fevereiro</option>
+                            <option value="3">Março</option>
+                            <option value="4">Abril</option>
+                            <option value="5">Maio</option>
+                            <option value="6">Junho</option>
+                            <option value="7">Julho</option>
+                            <option value="8">Agosto</option>
+                            <option value="9">Setembro</option>
+                            <option value="10">Outubro</option>
+                            <option value="11">Novembro</option>
+                            <option value="12">Dezembro</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group-vendas">
+                        <label for="vendaStatus">Status:</label>
+                        <select id="vendaStatus" required>
+                            <option value="" disabled selected>Selecione</option>
+                            <option value="saida">Saída </option>
+                        </select>
+                    </div>
+                    
+                    <div class="input-group-vendas">
+                        <label for="vendaPrecoUnitario">Preço Unitário:</label>
+                        <input 
+                            type="text" 
+                            id="vendaPrecoUnitario" 
+                            placeholder="0,00"
+                            required 
+                        >
+                    </div>
+
+                    <div class="input-group-vendas">
+                        <label for="vendaQuantidade">Quantidade:</label>
+                        <input type="number" id="vendaQuantidade" min="1" required value="1">
+                    </div>
+                    
+                    <div class="input-group-vendas">
+                        <label for="vendaPrecoFinal">Preço Final:</label>
+                        <input 
+                            type="text" 
+                            id="vendaPrecoFinal" 
+                            readonly
+                            placeholder="Cálculo Automático"
+                        >
+                    </div>
+                    
+                    <div class="input-group-vendas">
+                        <label for="vendaPagamento">Método de Pagamento:</label>
+                        <select id="vendaPagamento" required>
+                            <option value="" disabled selected>Selecione</option>
+                            <option value="pix">PIX</option>
+                            <option value="debito">Débito</option>
+                            <option value="credito">Crédito</option>
+                            <option value="dinheiro">Dinheiro</option>
+                            <option value="nao-se-aplica">Não se aplica</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="btn-adicionar">Registrar</button>
+                </div>
+            </form>
+
+            <div class="tabela-container">
+                <table id="tabelaVendas">
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Mês</th>
+                            <th>Status</th>
+                            <th>Descrição do Item</th>
+                            <th>Preço Unitário</th>
+                            <th>Quantidade</th>
+                            <th>Preço Final</th>
+                            <th>Método de Pagamento</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="listaVendas">
+                        </tbody>
+                </table>
+            </div>
+            <button id="btnLimparVendas" class="btn-limpar">Limpar Todos os Registros</button>
+        </div>
+        
+        <div class="card ranking-card">
+            <h2>Resumo por Item </h2>
+            <ol id="rankingLista">
+                <li>Nenhum dado de registro para calcular o resumo.</li>
+            </ol>
+        </div>
+
+        <div class="cartoes-destaque">
+            
+            <div class="card mes-destaque-card" id="mesMaisVendeuCard">
+                <h3>Mês de Maior Custo </h3>
+                <p id="mesMaisVendeuNome">N/A</p>
+                <small id="mesMaisVendeuValor">Total: R$ 0,00</small>
+            </div>
+            
+            <div class="card pagamento-destaque-card" id="pagamentoMaisUsadoCard">
+                <h3>Método de Pagamento Principal </h3>
+                <p id="pagamentoMaisUsadoNome">N/A</p>
+                <small id="pagamentoMaisUsadoContagem">0 transações</small>
+            </div>
+
+        </div>
+        
+        <div class="card faturamento-card">
+            <h2>Resumo de Despesas Mensais </h2>
+            <div class="tabela-container">
+                <table id="tabelaFaturamentoMensal">
+                    <thead>
+                        <tr>
+                            <th>Mês</th>
+                            <th>Total Gasto</th>
+                        </tr>
+                    </thead>
+                    <tbody id="listaFaturamentoMensal">
+                        </tbody>
+                </table>
+            </div>
+        </div>
+        
+    </main>
+
+    <script src="estoque.js"></script> 
+</body>
+</html>

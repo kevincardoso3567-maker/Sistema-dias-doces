@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Clientes</title>
+    <link rel="stylesheet" href="cadastro-de-clientes.css">
+    </head>
+<body>
+
+    <header class="header-cadastro">
+        <img src="logo-preta.png" alt="Logo da Empresa" class="header-logo-cadastro">
+        
+        <h1>Cadastro de Clientes</h1>
+        
+        <a href="inicio.html" class="btn-voltar">Voltar para Início</a>
+    </header>
+
+    <main class="container">
+        
+        <h2>Registro de Novos Clientes</h2>
+        
+        <form id="formCadastro" class="form-cadastro">
+            
+            <div class="input-group">
+                <label for="data">Data:</label>
+                <input type="date" id="data" name="data">
+            </div>
+            
+            <div class="input-group">
+                <label for="nome">Nome Completo:</label>
+                <input type="text" id="nome" name="nome" required placeholder="Ex: João da Silva">
+            </div>
+            
+            <div class="input-group">
+                <label for="telefone">Telefone:</label>
+                <input type="tel" id="telefone" name="telefone" placeholder="(XX) XXXXX-XXXX">
+            </div>
+            
+            <div class="input-group">
+                <label for="endereco">Endereço:</label>
+                <input type="text" id="endereco" name="endereco" placeholder="Rua, Número, Bairro, Cidade">
+            </div>
+            
+            <div class="input-group" style="flex: 1 1 100%; display: flex; gap: 15px; align-items: flex-end; justify-content: flex-start;">
+                <button type="submit" class="btn-salvar">Salvar Cliente</button>
+                </div>
+        </form>
+
+        <hr>
+
+        <div class="lista-header">
+            <h2>Lista de Clientes Cadastrados</h2>
+            <span id="btnUndoContainer"></span>
+        </div>
+        
+        <div class="tabela-container">
+            <table id="tabelaClientesPdf">
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Nome</th>
+                        <th>Telefone</th>
+                        <th>Endereço</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="listaClientes"> 
+                </tbody>
+            </table>
+        </div>
+
+    </main>
+
+    <script src="cadastro-de-clientes.js"></script> 
+</body>
+</html>

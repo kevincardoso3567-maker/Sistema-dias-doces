@@ -1,0 +1,88 @@
+/* Estilos básicos para o corpo da página */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    /* MUDANÇA: Fundo da página com a cor #ffaa32 */
+    background-color: #ffaa32; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+/* Estilos para o container principal do formulário */
+.login-container {
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 350px;
+    text-align: center;
+}
+
+/* MUDANÇA: Cor do texto H1 (Entrar no Sistema) para #ffaa32 */
+h1 {
+    color: #ffaa32;
+    margin-bottom: 25px;
+}
+
+/* Estilos para grupos de input (label + campo) */
+.input-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: #444;
+    font-weight: 600;
+}
+
+/* Estilos para os campos de texto e senha */
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    box-sizing: border-box; 
+    font-size: 16px;
+}
+
+/* MUDANÇA: Fundo do botão (Acessar) para #ffaa32 */
+button {
+    width: 100%;
+    padding: 12px;
+    background-color: #ffaa32;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+}
+
+/* Pequena variação para o hover para indicar interatividade */
+button:hover {
+    background-color: #e5992e; /* Uma cor um pouco mais escura que #ffaa32 */
+}
+
+/* Estilos para mensagens de erro (que serão exibidas pelo JS) */
+.mensagem-erro {
+    color: #ff4d4d;
+    margin-top: 15px;
+    font-weight: 500;
+    display: none; 
+}
+/* Estilos para a logo */
+.logo {
+    max-width: 150px; /* Define uma largura máxima para a logo */
+    height: auto; /* Mantém a proporção da imagem */
+    margin-bottom: 25px; /* Adiciona um espaço abaixo da logo */
+    display: block; /* Garante que ela ocupe sua própria linha */
+    margin-left: auto; /* Centraliza a imagem */
+    margin-right: auto; /* Centraliza a imagem */
+}

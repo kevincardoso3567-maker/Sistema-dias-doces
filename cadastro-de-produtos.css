@@ -1,0 +1,362 @@
+/* Salve TODO este código como: cadastro-de-produtos.css */
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 0;
+    /* Incluído para melhor responsividade em geral */
+    line-height: 1.6; 
+}
+
+/* ---------------------------------- */
+/* ESTILOS DO CABEÇALHO (Header) */
+/* ---------------------------------- */
+.header-cadastro {
+    background-color: #ffaa32;
+    padding: 10px 30px;
+    border-bottom: 3px solid #e5992e;
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    /* Garante que os itens se ajustem em telas pequenas */
+    flex-wrap: wrap; 
+}
+
+.header-logo-cadastro {
+    max-width: 80px; /* Reduzido levemente para melhor ajuste em mobile */
+    height: auto;
+    /* Garante que o logo não seja esmagado */
+    flex-shrink: 0; 
+}
+
+.header-cadastro h1 {
+    color: #333; 
+    font-size: 1.8em;
+    margin: 0;
+    flex-grow: 1; 
+    text-align: center;
+    /* Permite que o título ocupe a linha inteira em mobile */
+    flex-basis: auto; 
+    padding: 0 10px;
+}
+
+/* Estilos do Botão Voltar */
+.btn-voltar {
+    background-color: white;
+    color: #ffaa32;
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-weight: bold;
+    border: 1px solid #ffaa32; 
+    transition: background-color 0.3s, color 0.3s;
+    /* Garante que o botão não seja esmagado */
+    flex-shrink: 0; 
+}
+
+.btn-voltar:hover {
+    background-color: #e5992e; 
+    color: white;
+}
+
+/* ---------------------------------- */
+/* ESTILOS DO CONTAINER PRINCIPAL E CARTÕES */
+/* ---------------------------------- */
+.container {
+    max-width: 1200px; /* Aumentado para melhor visualização em desktops */
+    margin: 30px auto;
+    /* Ajustado padding para telas menores */
+    padding: 20px 15px; 
+    background-color: transparent; 
+    box-shadow: none; 
+}
+
+/* Estilo BÁSICO para TODOS os cartões */
+.card {
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 25px; 
+}
+
+/* Estilo para títulos H2 DENTRO dos cartões */
+.card h2 {
+    color: #ffaa32;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 10px;
+    margin-top: 0; 
+    margin-bottom: 20px;
+    font-size: 1.5em; /* Define um tamanho base */
+}
+
+.lista-header {
+    display: flex;
+    align-items: center;
+    gap: 15px; 
+    margin-bottom: 20px; 
+    /* Permite que os itens quebrem em telas menores */
+    flex-wrap: wrap; 
+}
+.lista-header h2 {
+    margin-bottom: 0; 
+    flex-shrink: 0; /* Impede que o título seja esmagado */
+}
+
+
+/* ---------------------------------- */
+/* ESTILOS DO FORMULÁRIO (Melhorado para Responsividade) */
+/* ---------------------------------- */
+.form-cadastro {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.input-group {
+    /* Padrão em desktop: ocupa metade */
+    flex: 1 1 45%; 
+    /* Define uma largura mínima para evitar campos muito estreitos */
+    min-width: 280px; 
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #444;
+}
+
+.form-cadastro input,
+.form-cadastro select { 
+    /* Garante que ocupem toda a largura disponível no seu grupo */
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; 
+}
+
+/* Força o botão de Salvar a não ser o único item na linha em telas maiores */
+.form-cadastro .input-group:last-child {
+    flex-grow: 0;
+}
+
+.btn-salvar {
+    background-color: #5cb85c; 
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    margin-top: 10px;
+    transition: background-color 0.3s;
+}
+
+.btn-salvar:hover {
+    background-color: #4cae4c;
+}
+
+.pdf-export-container {
+    text-align: right;
+    margin-top: 20px;
+}
+
+/* ---------------------------------- */
+/* ESTILOS DA TABELA (Mantém a Rolagem Horizontal) */
+/* ---------------------------------- */
+.tabela-container {
+    /* Essencial: adiciona rolagem em X se a tabela for maior que o contêiner */
+    overflow-x: auto; 
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    /* Define uma largura mínima para a tabela, garantindo que o overflow-x seja acionado */
+    min-width: 750px; 
+    margin-top: 0;
+}
+
+table th, table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    /* Garante que o texto quebre, evitando o corte */
+    white-space: normal; 
+    word-break: break-word;
+}
+
+table th {
+    background-color: #ffaa32;
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* Linha de input na tabela de Orçamento */
+#listaOrcamento tr:first-child {
+    background-color: #f9f9f9 !important; 
+}
+
+/* Footer da Tabela de Orçamento */
+#tabelaOrcamento tfoot tr {
+    background-color: #fff3cd; 
+    border-top: 2px solid #ffaa32;
+}
+#tabelaOrcamento tfoot td {
+    padding: 15px 15px;
+}
+
+/* ---------------------------------- */
+/* ESTILOS DOS BOTÕES DE AÇÃO */
+/* ---------------------------------- */
+
+.acoes-botoes {
+    /* Garante que os botões se ajustem */
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    /* Impede a quebra de linha dentro da célula de Ações para forçar a rolagem, se necessário */
+    white-space: nowrap; 
+    min-width: 100px;
+}
+
+.acoes-botoes button {
+    margin: 0; 
+    flex-shrink: 0;
+    transition: opacity 0.3s;
+}
+.acoes-botoes button:hover {
+    opacity: 0.8;
+}
+
+.btn-editar, .btn-excluir {
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.85em; /* Levemente menor para caber melhor */
+}
+
+.btn-editar {
+    background-color: #1877f2;
+    color: white;
+}
+
+.btn-excluir {
+    background-color: #d9534f; 
+    color: white;
+}
+
+/* ... (Estilos btn-undo, status, input-edicao mantidos) ... */
+
+/* Estilo para inputs durante a edição na tabela (e na tabela de orçamento) */
+.input-edicao {
+    width: 90%;
+    padding: 4px;
+    border: 1px solid #ffaa32;
+    border-radius: 3px;
+    box-sizing: border-box;
+    text-align: right; 
+}
+
+/* Ajuste para o select da tabela de orçamento */
+#selectProdutoOrcamento {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+/* ================================== */
+/* MEDIA QUERIES PARA RESPONSIVIDADE */
+/* ================================== */
+
+/* Para telas MÉDIAS (tablets em modo retrato, até 850px) */
+@media (max-width: 850px) {
+    .input-group {
+        /* Garante que 3 campos possam caber em tablets, se necessário */
+        flex: 1 1 30%; 
+    }
+    .input-group:nth-last-child(2),
+    .input-group:last-child {
+        /* Garante que os dois últimos campos e o botão ocupem a largura total */
+        flex: 1 1 100%;
+    }
+    .form-cadastro {
+        gap: 15px; /* Reduz o espaçamento entre campos */
+    }
+}
+
+/* Para telas PEQUENAS (smartphones, até 600px) */
+@media (max-width: 600px) {
+    
+    /* --- Cabeçalho --- */
+    .header-cadastro {
+        padding: 10px 15px;
+    }
+    
+    .header-cadastro h1 {
+        /* Título ocupa a linha inteira */
+        flex-basis: 100%; 
+        font-size: 1.4em; 
+        margin-top: 5px;
+    }
+    
+    .header-logo-cadastro {
+        max-width: 70px;
+    }
+    
+    .btn-voltar {
+        padding: 8px 10px;
+        font-size: 0.8em;
+    }
+
+    /* --- Container e Formulário --- */
+    .container {
+        margin: 15px 10px;
+        padding: 15px;
+    }
+    
+    .card {
+        padding: 15px;
+    }
+
+    .card h2 {
+        font-size: 1.3em;
+    }
+
+    .input-group {
+        /* Ocupa 100% da largura em telas pequenas */
+        flex: 1 1 100%; 
+        min-width: 100%;
+    }
+    
+    /* Botão Salvar ocupa a largura total */
+    .btn-salvar {
+        width: 100%; 
+    }
+
+    .lista-header {
+        /* Empilha o título e o botão Desfazer */
+        flex-direction: column; 
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    /* --- Tabela --- */
+    /* A tabela se mantém com min-width, forçando a rolagem, o que é o comportamento ideal em mobile. */
+    table th, table td {
+        padding: 8px 10px; /* Mais compacto */
+        font-size: 0.85em;
+    }
+}

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Vendas</title>
+    
+    <link rel="stylesheet" href="vendas.css">
+</head>
+<body>
+
+    <header class="header-vendas">
+        <img src="logo-preta.png" alt="Logo da Empresa" class="header-logo-vendas">
+        
+        <h1>Registro de Vendas</h1>
+        
+        <a href="inicio.html" class="btn-voltar">Voltar</a>
+    </header>
+
+    <main class="container">
+        
+        <div class="card vendas-card">
+            <h2>Adicionar Nova Venda</h2>
+            
+            <form id="formAdicionarVenda" class="form-entrada">
+                <div class="input-row-vendas">
+
+                    <div class="input-group-vendas" style="flex-basis: 100%;">
+                        <label for="vendaCliente">Nome do Cliente:</label>
+                        <input type="text" id="vendaCliente" placeholder="Opcional">
+                    </div>
+                    
+                    <div class="input-group-vendas">
+                        <label for="vendaData">Data:</label>
+                        <input type="date" id="vendaData" required>
+                    </div>
+
+                    <div class="input-group-vendas">
+                        <label for="vendaMes">Mês:</label>
+                        <select id="vendaMes" required>
+                            <option value="" disabled selected>Selecione o Mês</option>
+                            <option value="1">Janeiro</option>
+                            <option value="2">Fevereiro</option>
+                            <option value="3">Março</option>
+                            <option value="4">Abril</option>
+                            <option value="5">Maio</option>
+                            <option value="6">Junho</option>
+                            <option value="7">Julho</option>
+                            <option value="8">Agosto</option>
+                            <option value="9">Setembro</option>
+                            <option value="10">Outubro</option>
+                            <option value="11">Novembro</option>
+                            <option value="12">Dezembro</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group-vendas">
+                        <label for="vendaStatus">Status:</label>
+                        <select id="vendaStatus" required>
+                            <option value="" disabled selected>Selecione</option>
+                            <option value="entrada">Entrada</option>
+                            <option value="saida">Saída</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group-vendas">
+                        <label for="vendaProduto">Produto:</label>
+                        <select id="vendaProduto" required>
+                            <option value="" disabled selected>Carregando Produtos...</option>
+                        </select>
+                    </div>
+                    
+                    <div class="input-group-vendas">
+                        <label for="vendaID">ID:</label>
+                        <input type="text" id="vendaID" readonly placeholder="Preenchimento Automático">
+                    </div>
+
+                    <div class="input-group-vendas">
+                        <label for="vendaPrecoUnitario">Preço Unitário:</label>
+                        <input 
+                            type="text" 
+                            id="vendaPrecoUnitario" 
+                            readonly
+                            placeholder="R$ 0,00"
+                        >
+                    </div>
+
+                    <div class="input-group-vendas">
+                        <label for="vendaQuantidade">Quantidade:</label>
+                        <input type="number" id="vendaQuantidade" min="1" required value="1">
+                    </div>
+                    
+                    <div class="input-group-vendas">
+                        <label for="vendaPrecoFinal">Preço Final:</label>
+                        <input 
+                            type="text" 
+                            id="vendaPrecoFinal" 
+                            readonly
+                            placeholder="Cálculo Automático"
+                        >
+                    </div>
+                    
+                    <div class="input-group-vendas">
+                        <label for="vendaPagamento">Método de Pagamento:</label>
+                        <select id="vendaPagamento" required>
+                            <option value="" disabled selected>Selecione</option>
+                            <option value="pix">PIX</option>
+                            <option value="debito">Débito</option>
+                            <option value="credito">Crédito</option>
+                            <option value="dinheiro">Dinheiro</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="btn-adicionar">Registrar Venda</button>
+                </div>
+            </form>
+
+            <div class="tabela-container">
+                <table id="tabelaVendas">
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Mês</th>
+                            <th>Status</th>
+                            <th>Cliente</th> <th>Produto</th>
+                            <th>ID</th>
+                            <th>Preço Unitário</th>
+                            <th>Quantidade</th>
+                            <th>Preço Final</th>
+                            <th>Método de Pagamento</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="listaVendas">
+                        </tbody>
+                </table>
+            </div>
+            <button id="btnLimparVendas" class="btn-limpar">Limpar Tabela Vendas</button>
+        </div>
+        
+        <div class="card ranking-card">
+            <h2>Ranking: Produtos Mais Vendidos (Quantidade)</h2>
+            <ol id="rankingLista">
+                <li>Nenhum dado de venda para calcular o ranking.</li>
+            </ol>
+        </div>
+
+        <div class="cartoes-destaque">
+            
+            <div class="card mes-destaque-card" id="mesMaisVendeuCard">
+                <h3>Mês de Maior Faturamento</h3>
+                <p id="mesMaisVendeuNome">N/A</p>
+                <small id="mesMaisVendeuValor">Total: R$ 0,00</small>
+            </div>
+            
+            <div class="card pagamento-destaque-card" id="pagamentoMaisUsadoCard">
+                <h3>Método de Pagamento Principal</h3>
+                <p id="pagamentoMaisUsadoNome">N/A</p>
+                <small id="pagamentoMaisUsadoContagem">0 transações</small>
+            </div>
+
+        </div>
+        
+        <div class="card faturamento-card">
+            <h2>Resumo de Faturamento Mensal (Entradas)</h2>
+            <div class="tabela-container">
+                <table id="tabelaFaturamentoMensal">
+                    <thead>
+                        <tr>
+                            <th>Mês</th>
+                            <th>Total Faturado</th>
+                        </tr>
+                    </thead>
+                    <tbody id="listaFaturamentoMensal">
+                        </tbody>
+                </table>
+            </div>
+        </div>
+        
+    </main>
+
+    <script src="vendas.js"></script> 
+</body>
+</html>

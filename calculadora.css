@@ -1,0 +1,316 @@
+/* Salve TODO este código como: cadastro-de-produtos.css */
+
+/* Estilos Gerais */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 0;
+    color: #333;
+    line-height: 1.6; /* Melhor legibilidade */
+}
+
+.container {
+    max-width: 1200px;
+    margin: 20px auto;
+    /* Ajuste de padding para telas menores */
+    padding: 0 15px; 
+}
+
+/* ---------------------------------- */
+/* Header (Responsivo) */
+/* ---------------------------------- */
+.header-calculadora {
+    background-color: #ffaa32;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: none; 
+    /* Essencial para que os itens quebrem em telas pequenas */
+    flex-wrap: wrap; 
+}
+
+.header-logo-calculadora {
+    height: 60px; 
+    flex-shrink: 0; /* Impede o esmagamento */
+}
+
+.header-calculadora h1 { 
+    color: white;
+    font-size: 1.5em;
+    flex-grow: 1; 
+    text-align: center;
+    /* Adicionado margin-top para empilhar corretamente em mobile */
+    margin-top: 0; 
+    padding: 0 10px;
+}
+
+/* Botão Voltar */
+.btn-voltar {
+    background-color: white; 
+    color: #ffaa32; 
+    padding: 8px 15px;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s, color 0.3s;
+    font-weight: bold; 
+    border: 1px solid white; 
+    flex-shrink: 0;
+}
+
+.btn-voltar:hover {
+    background-color: #ffaa32; 
+    color: white;
+    border: 1px solid #ffaa32;
+}
+
+/* Estilo do Cartão (Card) */
+.card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+.calculadora-card h2,
+.contas-card h2,
+.embalagem-card h2 { 
+    color: #ffaa32; 
+    margin-top: 0;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+    font-size: 1.4em; /* Ajuste para telas menores */
+}
+
+/* ---------------------------------- */
+/* Formulários (Responsivo) */
+/* ---------------------------------- */
+
+.input-row,
+.input-row-contas,
+.input-row-itens { 
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    align-items: flex-end; 
+}
+
+.input-group-calc {
+    display: flex;
+    flex-direction: column;
+    /* Permite que os campos cresçam e ocupem o espaço, mas com largura mínima */
+    flex-grow: 1; 
+    /* Define uma largura mínima razoável para quebrar em mobile */
+    min-width: 140px; 
+}
+
+.input-group-calc label {
+    font-size: 0.9em;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.input-group-calc input,
+.input-group-calc select {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1em;
+    /* Garante que o input ocupe 100% da largura do seu grupo */
+    width: 100%; 
+    box-sizing: border-box; /* Garante que padding e border não extrapolem a largura */
+}
+
+.btn-adicionar {
+    background-color: #ffaa32;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s;
+    /* Altura corrigida para alinhar com os inputs */
+    height: 38px; 
+    /* Impede que o botão encolha em mobile */
+    flex-shrink: 0; 
+}
+
+.btn-adicionar:hover {
+    background-color: #e09228;
+}
+
+/* ---------------------------------- */
+/* Tabela (Responsivo com Rolagem) */
+/* ---------------------------------- */
+.tabela-container {
+    /* Essencial: adiciona rolagem em X se a tabela for maior que o contêiner */
+    overflow-x: auto;
+}
+
+#tabelaIngredientes,
+#tabelaContas,
+#tabelaItens { 
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    /* Define uma largura mínima para forçar a rolagem em telas pequenas,
+       já que o conteúdo da tabela não pode ser reformatado em stack facilmente. */
+    min-width: 600px; 
+}
+
+#tabelaIngredientes th,
+#tabelaIngredientes td,
+#tabelaContas th,
+#tabelaContas td,
+#tabelaItens th,
+#tabelaItens td { 
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+    /* CORREÇÃO CHAVE: Permite a quebra de linha para que a tabela se ajuste melhor. 
+       A rolagem horizontal (min-width + overflow-x) lidará com o excesso. */
+    white-space: normal; 
+    word-break: break-word; /* Para palavras longas */
+    font-size: 0.9em;
+}
+
+#tabelaIngredientes th,
+#tabelaContas th,
+#tabelaItens th { 
+    background-color: #f0f0f0;
+    font-weight: bold;
+}
+
+/* Estilos de Ações na Tabela */
+.btn-remover {
+    background-color: #dc3545;
+    color: white;
+    padding: 5px 8px; /* Mais compacto */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.85em; /* Levemente menor */
+    transition: background-color 0.3s;
+}
+
+.btn-remover:hover {
+    background-color: #c82333;
+}
+
+/* Estilo dos botões Limpar */
+#btnLimparIngredientes,
+#btnLimparContas,
+#btnLimparItens {
+    background-color: #6c757d;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 15px;
+    transition: background-color 0.3s;
+}
+
+#btnLimparIngredientes:hover,
+#btnLimparContas:hover,
+#btnLimparItens:hover {
+    background-color: #5a6268;
+}
+
+.instrucao {
+    font-size: 0.9em;
+    color: #666;
+    margin-bottom: 15px;
+}
+
+/* ================================== */
+/* MEDIA QUERIES PARA RESPONSIVIDADE */
+/* ================================== */
+
+/* Para telas pequenas (smartphones, até 600px) */
+@media (max-width: 600px) {
+    
+    /* --- Header --- */
+    .header-calculadora {
+        padding: 10px 15px;
+        /* Altera o fluxo: logo e botão lado a lado, título embaixo */
+        justify-content: space-around; 
+    }
+    
+    .header-calculadora h1 {
+        /* Ocupa a linha inteira */
+        flex-basis: 100%; 
+        font-size: 1.3em; 
+        margin-top: 5px;
+        order: 3;
+    }
+    
+    .header-logo-calculadora {
+        height: 50px;
+        order: 1;
+    }
+    
+    .btn-voltar {
+        order: 2;
+        padding: 6px 10px;
+        font-size: 0.8em;
+    }
+    
+    /* --- Cartões e Formulários --- */
+    .card {
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+    
+    .calculadora-card h2,
+    .contas-card h2,
+    .embalagem-card h2 { 
+        font-size: 1.2em;
+    }
+
+    .input-row,
+    .input-row-contas,
+    .input-row-itens { 
+        /* Alinha verticalmente os campos para telas muito pequenas */
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .input-group-calc {
+        min-width: 100%; /* Ocupa 100% da largura do cartão */
+    }
+    
+    /* Ajusta o botão 'Adicionar' para a largura total quando empilhado */
+    .btn-adicionar {
+        width: 100%;
+        height: auto; /* Permite ajuste automático */
+        margin-top: 5px;
+    }
+    
+    /* --- Tabela --- */
+    /* A tabela usará a rolagem horizontal (overflow-x) definida no .tabela-container */
+    #tabelaIngredientes th,
+    #tabelaIngredientes td,
+    #tabelaContas th,
+    #tabelaContas td,
+    #tabelaItens th,
+    #tabelaItens td {
+        padding: 8px;
+        font-size: 0.8em;
+    }
+    
+    .btn-remover {
+        padding: 4px 6px;
+        font-size: 0.75em;
+    }
+    
+    #btnLimparIngredientes,
+    #btnLimparContas,
+    #btnLimparItens {
+        width: 100%;
+    }
+}

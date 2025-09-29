@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Produtos</title>
+    <link rel="stylesheet" href="cadastro-de-produtos.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
+</head>
+<body>
+
+    <header class="header-cadastro">
+        <img src="logo-preta.png" alt="Logo da Empresa" class="header-logo-cadastro">
+        
+        <h1>Cadastro de Produtos</h1>
+        
+        <a href="inicio.html" class="btn-voltar">Voltar para Início</a>
+    </header>
+
+    <main class="container">
+        
+        <div class="card registro-card">
+            <h2>Registro de Novos Produtos</h2>
+            
+            <form id="formCadastroProduto" class="form-cadastro">
+                
+                <div class="input-group">
+                    <label for="nomeProduto">Nome do Produto:</label>
+                    <input type="text" id="nomeProduto" name="nomeProduto" required placeholder="Ex: Bolo de Cenoura">
+                </div>
+                
+                <div class="input-group">
+                    <label for="categoria">Categoria:</label>
+                    <select id="categoria" name="categoria" required>
+                        <option value="" disabled selected>Selecione a Categoria</option>
+                        <option value="Bolos simples">Bolos simples</option>
+                        <option value="Bolos recheados">Bolos recheados</option>
+                        <option value="Doces">Doces</option>
+                        <option value="Salgados">Salgados</option>
+                        <option value="Pães">Pães</option>
+                        <option value="Torta na marmita">Torta na marmita</option>
+                    </select>
+                </div>
+                
+                <div class="input-group">
+                    <label for="tamanhoMedio">Tamanho Médio (ex: 20cm, 1Kg):</label>
+                    <input type="text" id="tamanhoMedio" name="tamanhoMedio" placeholder="Ex: 20cm">
+                </div>
+                
+                <div class="input-group">
+                    <label for="status">Status:</label>
+                    <select id="status" name="status" required>
+                        <option value="Producao" selected>Produção</option>
+                        <option value="Sem Fabricacao">Sem Fabricação</option>
+                    </select>
+                </div>
+                
+                <div class="input-group">
+                    <label for="precoUnitario">Preço Unitário (R$):</label>
+                    <input 
+                        type="text" 
+                        id="precoUnitario" 
+                        name="precoUnitario" 
+                        required 
+                        placeholder="R$ 0,00"
+                        onkeyup="formatarMoeda(this)"
+                    >
+                </div>
+                
+                <button type="submit" class="btn-salvar">Salvar Produto</button>
+            </form>
+        </div>
+        
+        <div class="card lista-card">
+            <div class="lista-header">
+                <h2>Lista de Produtos Cadastrados</h2>
+                <span id="btnUndoContainer"></span>
+            </div>
+            
+            <div class="tabela-container">
+                <table id="tabelaProdutos">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Produto</th>
+                            <th>Categoria</th>
+                            <th>Tamanho Médio</th>
+                            <th>Status</th>
+                            <th>Preço Unitário</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="listaProdutos"> 
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="pdf-export-container">
+                 <button id="btnExportarPdf" class="btn-salvar">Exportar para PDF</button>
+            </div>
+        </div>
+
+        <div class="card orcamento-card"> 
+            <h2>Simulação de Orçamento/Venda</h2>
+            
+            <div class="tabela-container">
+                <table id="tabelaOrcamento">
+                    <thead>
+                        <tr>
+                            <th>Produto</th>
+                            <th>Preço Unitário (R$)</th>
+                            <th>Quantidade</th>
+                            <th>Preço Total (R$)</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="listaOrcamento">
+                        <tr id="linhaCalculadoraOrcamento">
+                            <td>
+                                <select id="selectProdutoOrcamento" onchange="atualizarPrecoUnitario(this)">
+                                    <option value="" disabled selected>Selecione um Produto</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input type="text" id="precoUnitarioOrcamento" value="R$ 0,00" readonly class="input-edicao">
+                            </td>
+                            <td>
+                                <input type="number" id="quantidadeOrcamento" value="1" min="1" oninput="calcularPrecoTotal()" class="input-edicao">
+                            </td>
+                            <td>
+                                <input type="text" id="precoTotalOrcamento" value="R$ 0,00" readonly class="input-edicao">
+                            </td>
+                            <td>
+                                <button class="btn-salvar" onclick="copiarResultado()">Copiar Resultado</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                    </table>
+            </div>
+        </div> 
+    </main>
+
+    <script src="cadastro-de-produtos.js"></script> 
+</body>
+</html>

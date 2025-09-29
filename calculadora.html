@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Custos</title>
+    
+    <link rel="stylesheet" href="calculadora.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
+</head>
+<body>
+
+    <header class="header-calculadora">
+        <img src="logo-preta.png" alt="Logo da Empresa" class="header-logo-calculadora">
+        
+        <h1>Calculadora de Custos</h1>
+        
+        <a href="inicio.html" class="btn-voltar">Voltar</a>
+    </header>
+
+    <main class="container">
+        
+        <div class="card calculadora-card">
+            <h2>Calculadora de Ingredientes</h2>
+            
+            <form id="formAdicionarIngrediente" class="form-entrada">
+                <div class="input-row">
+                    
+                    <div class="input-group-calc">
+                        <label for="ingredienteNome">Ingrediente:</label>
+                        <input type="text" id="ingredienteNome" required placeholder="Ex: Farinha de Trigo">
+                    </div>
+                    
+                    <div class="input-group-calc">
+                        <label for="quantidadeEmbalagem">Quantidade da Embalagem:</label>
+                        <input type="number" id="quantidadeEmbalagem" min="1" required>
+                    </div>
+                    
+                    <div class="input-group-calc">
+                        <label for="unidadeMedida">Unidade de Medida:</label>
+                        <select id="unidadeMedida" required>
+                            <option value="" disabled selected>Selecione</option>
+                            <option value="unidade">Unidade</option>
+                            <option value="grama">Grama (g)</option>
+                            <option value="mililitro">Mililitro (ml)</option>
+                            <option value="quilograma">Quilograma (Kg)</option>
+                            <option value="litro">Litro (L)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="input-group-calc">
+                        <label for="valorPago">Valor Pago (R$):</label>
+                        <input 
+                            type="text" 
+                            id="valorPago" 
+                            required 
+                            placeholder="R$ 0,00"
+                            onkeyup="formatarMoeda(this)"
+                        >
+                    </div>
+                    
+                    <div class="input-group-calc">
+                        <label for="localCompra">Local da Compra:</label>
+                        <input type="text" id="localCompra" placeholder="Ex: Atacadista X">
+                    </div>
+                    
+                    <button type="submit" class="btn-adicionar">Adicionar e Calcular</button>
+                </div>
+            </form>
+
+            <div class="tabela-container">
+                <table id="tabelaIngredientes">
+                    <thead>
+                        <tr>
+                            <th>Ingrediente</th>
+                            <th>Qtd. Embalagem</th>
+                            <th>Unidade de Medida</th>
+                            <th>Valor Pago</th>
+                            <th>Custo Unitário</th>
+                            <th>Local da Compra</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="listaIngredientes">
+                        </tbody>
+                </table>
+            </div>
+            <button id="btnLimparIngredientes" class="btn-limpar">Limpar Tabela Ingredientes</button>
+        </div> 
+
+        
+        <div class="card contas-card">
+            <h2>Calculadora de Custo por Hora (Contas Fixas)</h2>
+            
+            <p class="instrucao">Informe o valor total da conta (mensal) para calcular o custo por hora de trabalho/produção (base 240h/mês).</p>
+
+            <form id="formAdicionarConta" class="form-entrada">
+                <div class="input-row-contas">
+                    <div class="input-group-calc">
+                        <label for="nomeConta">Conta Fixa:</label>
+                        <input type="text" id="nomeConta" required placeholder="Ex: Aluguel, Luz, Internet">
+                    </div>
+                    
+                    <div class="input-group-calc">
+                        <label for="valorConta">Valor Mensal (R$):</label>
+                        <input 
+                            type="text" 
+                            id="valorConta" 
+                            required 
+                            placeholder="R$ 0,00"
+                            onkeyup="formatarMoeda(this)"
+                        >
+                    </div>
+
+                    <button type="submit" class="btn-adicionar">Adicionar e Calcular</button>
+                </div>
+            </form>
+            
+            <div class="tabela-container">
+                <table id="tabelaContas">
+                    <thead>
+                        <tr>
+                            <th>Conta Fixa</th>
+                            <th>Valor Mensal (R$)</th>
+                            <th>Custo por Hora (R$)</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="listaContas">
+                        </tbody>
+                </table>
+            </div>
+            <button id="btnLimparContas" class="btn-limpar">Limpar Tabela Contas</button>
+        </div>
+
+
+        <div class="card embalagem-card">
+            <h2>Calculadora de Itens e Embalagem</h2>
+            
+            <p class="instrucao">Calcule o custo por unidade de itens comprados em pacotes ou caixas.</p>
+
+            <form id="formAdicionarItem" class="form-entrada">
+                <div class="input-row-itens">
+                    <div class="input-group-calc">
+                        <label for="nomeItem">Item:</label>
+                        <input type="text" id="nomeItem" required placeholder="Ex: Copo plástico, Caixas de pizza">
+                    </div>
+                    
+                    <div class="input-group-calc">
+                        <label for="precoItem">Preço do Pacote (R$):</label>
+                        <input 
+                            type="text" 
+                            id="precoItem" 
+                            required 
+                            placeholder="R$ 0,00"
+                            onkeyup="formatarMoeda(this)"
+                        >
+                    </div>
+
+                    <div class="input-group-calc">
+                        <label for="quantidadeItem">Quantidade no Pacote:</label>
+                        <input type="number" id="quantidadeItem" min="1" required placeholder="Ex: 50, 100">
+                    </div>
+
+                    <button type="submit" class="btn-adicionar">Adicionar e Calcular</button>
+                </div>
+            </form>
+            
+            <div class="tabela-container">
+                <table id="tabelaItens">
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Preço do Pacote (R$)</th>
+                            <th>Quantidade no Pacote</th>
+                            <th>Preço por Unidade (R$)</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="listaItens">
+                        </tbody>
+                </table>
+            </div>
+            <button id="btnLimparItens" class="btn-limpar">Limpar Tabela Itens e Embalagem</button>
+        </div>
+        
+    </main>
+
+    <script src="calculadora.js"></script> 
+</body>
+</html>

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Precificação de Produto</title>
+    <link rel="stylesheet" href="precificacao.css"> 
+    
+    <style>
+        /* ========================================================================= */
+        /* ESTILOS DE CORREÇÃO E AJUSTES FINOS (Específicos da tela de precificação) */
+        /* ========================================================================= */
+        
+        main.container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 15px; 
+        }
+        
+        .input-produto-card input {
+            font-size: 1.5em !important;
+            font-weight: 600;
+            padding: 15px 10px !important;
+            border: 2px solid #ffaa32 !important;
+        }
+
+        .resumo-produto {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            border-bottom: 1px dashed #007bff;
+        }
+        .input-mao-de-obra {
+            width: 100%; 
+            border: none; 
+            background: transparent; 
+            text-align: right; 
+            font-weight: bold; 
+            padding: 8px;
+        }
+        
+        .total-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            margin-top: 30px;
+            width: 100%;
+        }
+
+        .total-geral {
+            font-size: 1.5em;
+            font-weight: bold;
+            padding: 15px;
+            border: 2px solid #28a745;
+            background-color: #e9f5e9;
+            border-radius: 5px;
+            text-align: center;
+            flex-grow: 1; 
+        }
+        
+        .btn-pdf {
+            background-color: #dc3545; 
+            color: white;
+            padding: 15px 25px;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            white-space: nowrap;
+        }
+
+        .btn-pdf:hover {
+            background-color: #c82333;
+        }
+        
+        .btn-remover {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .row-selecao-permanente {
+            background-color: #e9f5e9;
+            border-top: 2px solid #28a745;
+        }
+        .tabela-resumo {
+            width: 100%;
+            max-width: 400px;
+            margin-bottom: 20px;
+        }
+        .tabela-resumo tr:last-child {
+             font-weight: bold;
+             border-top: 2px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header-calculadora">
+        <img src="logo-preta.png" alt="Logo da Empresa" class="header-logo-calculadora">
+        <h1>Precificação de Produto</h1>
+        <a href="inicio.html" class="btn-voltar">Voltar para Início</a>
+    </header>
+
+    <main class="container">
+        
+        <div class="card card-menor input-produto-card">
+            <h2>Nome do Produto/Receita</h2>
+            <div class="input-group">
+                <label for="nomeProduto">Insira o nome (Ex: Torta de Limão - 12 fatias)</label>
+                <input type="text" id="nomeProduto" placeholder="Ex: Torta de Limão (12 fatias)">
+            </div>
+        </div>
+
+        <div id="relatorio-pdf" style="width: 100%;">
+            
+            <div class="card" id="ingredientes-card-pdf">
+                <h2>1. Ingredientes Usados na Receita</h2>
+                <div class="tabela-container">
+                    <table id="tabelaIngredientes">
+                        <thead>
+                            <tr>
+                                <th>Ingredientes Usados</th>
+                                <th>Custo por Ingrediente (R$/unidade)</th>
+                                <th>Quantidade Usada</th>
+                                <th>Total (R$)</th>
+                                <th class="coluna-acoes">Ações</th> </tr>
+                        </thead>
+                        <tbody id="listaIngredientesBody">
+                            </tbody>
+                        <tfoot id="rodapeIngredientes">
+                            </tfoot>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card" id="contas-card-pdf">
+                <h2>2. Custos Fixos por Hora de Produção</h2>
+                <p>Este custo será baseado no tempo total de produção deste produto.</p>
+                <div class="tabela-container">
+                    <table id="tabelaContas">
+                        <thead>
+                            <tr>
+                                <th>Conta Usada</th>
+                                <th>Custo por Hora (R$)</th>
+                                <th>Horas Usadas</th>
+                                <th>Total Hora (R$)</th>
+                                <th class="coluna-acoes">Ações</th> 
+                            </tr>
+                        </thead>
+                        <tbody id="listaContasBody">
+                            </tbody>
+                        <tfoot id="rodapeContas">
+                            </tfoot>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="card" id="itens-card-pdf">
+                <h2>3. Itens e Embalagem</h2>
+                <div class="tabela-container">
+                    <table id="tabelaItens">
+                        <thead>
+                            <tr>
+                                <th>Item/Embalagem</th>
+                                <th>Custo Unitário (R$)</th>
+                                <th>Quantidade Usada</th>
+                                <th>Total (R$)</th>
+                                <th class="coluna-acoes">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="listaItensBody">
+                            </tbody>
+                        <tfoot id="rodapeItens">
+                            </tfoot>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="card" id="resumo-card-pdf">
+                <h2>4. Resumo de Custos e Mão de Obra</h2>
+                
+                <div id="resumoNomeProduto" class="resumo-produto">
+                    Produto: Não Informado
+                </div>
+
+                <table class="tabela-resumo">
+                    <tbody>
+                        <tr>
+                            <td>Custo dos Ingredientes:</td>
+                            <td id="totalIngredientesDisplay" style="text-align: right; font-weight: bold;">R$ 0,00</td>
+                        </tr>
+                        <tr>
+                            <td>Custo das Contas Fixas:</td>
+                            <td id="totalContasDisplay" style="text-align: right; font-weight: bold;">R$ 0,00</td>
+                        </tr>
+                        <tr>
+                            <td>Custo de Itens e Embalagem:</td>
+                            <td id="totalItensDisplay" style="text-align: right; font-weight: bold;">R$ 0,00</td>
+                        </tr>
+                        <tr>
+                            <td style="padding-top: 10px;">Subtotal (Custos Diretos):</td>
+                            <td id="subtotalDireto" style="text-align: right; font-weight: bold; padding-top: 10px;">R$ 0,00</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <table class="tabela-resumo">
+                    <tbody>
+                        <tr class="row-selecao-permanente">
+                            <td style="font-weight: bold;">Mão de Obra (Valor Manual R$):</td>
+                            <td style="text-align: right; padding: 0;">
+                                <input type="number" id="inputMaoDeObra" value="0.00" min="0" step="0.01" class="input-mao-de-obra">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="total-container">
+                <div class="total-geral">
+                    CUSTO TOTAL DO PRODUTO: <span id="custoTotalGeral">R$ 0,00</span>
+                </div>
+                
+                <button id="exportarPdfBtn" class="btn-pdf">
+                    Exportar para PDF
+                </button>
+            </div>
+        
+        </div> </main>
+
+    <script src="precificacao.js"></script> 
+</body>
+</html>

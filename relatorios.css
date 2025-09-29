@@ -1,0 +1,124 @@
+/* --- Estilos Gerais --- */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9; 
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+/* ------------------------------------------------------------------ */
+/* --- CABEÇALHO (Header: Logo, Título, Botão Voltar) --- */
+/* ------------------------------------------------------------------ */
+header {
+    background-color: #ffaa32; /* Cor Laranja */
+    padding: 15px 0; 
+    border-bottom: 3px solid #e5992e; /* Borda escura para contraste */
+    margin-bottom: 30px;
+}
+
+/* Container que alinha Logo (esquerda), Título (centro) e Botão (direita) */
+.header-content {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto; /* Centraliza o conteúdo do header */
+    padding: 0 20px; 
+}
+
+/* Logo */
+.header-logo {
+    max-width: 120px;
+    height: auto;
+    /* Ajuste para garantir que o logo não seja esmagado */
+    flex-shrink: 0; 
+}
+
+/* Título */
+h1 {
+    color: white; 
+    font-size: 1.8em;
+    margin: 0;
+    flex-grow: 1; /* Permite que o título ocupe o espaço central */
+    text-align: center;
+}
+
+/* Botão de Voltar */
+.btn-voltar {
+    display: inline-block;
+    background-color: #e5992e; /* Tom mais escuro do laranja para contraste */
+    color: white;
+    text-decoration: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+    flex-shrink: 0; /* Garante que o botão não encolha */
+}
+
+.btn-voltar:hover {
+    background-color: #c98528;
+}
+
+/* ------------------------------------------------------------------ */
+/* --- ESTILOS DOS CARTÕES DE MÉTRICAS --- */
+/* ------------------------------------------------------------------ */
+
+/* Container dos Cartões (Layout Flexbox) */
+.dashboard-resumo {
+    display: flex;
+    justify-content: center;
+    gap: 30px; 
+    padding: 20px;
+}
+
+/* Estilo Base do Cartão */
+.card {
+    flex-basis: 300px;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    color: white; 
+    text-align: left;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); 
+}
+
+/* Tipografia */
+.card-titulo {
+    font-size: 1.2em;
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-weight: normal;
+}
+
+.card-valor {
+    font-size: 2.5em;
+    font-weight: bold;
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+
+.card-subtexto {
+    font-size: 0.9em;
+    opacity: 0.8;
+    margin: 0;
+}
+
+/* Cores Específicas */
+.card-entrada {
+    background-color: #28a745; /* Verde */
+}
+
+.card-saida {
+    background-color: #dc3545; /* Vermelho */
+}
+
+.card-saldo {
+    background-color: #007bff; /* Azul */
+}

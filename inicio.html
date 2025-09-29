@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Início | Dashboard</title>
+    <link rel="stylesheet" href="inicio.css">
+</head>
+<body>
+
+    <header>
+        <img src="logo-preta.png" alt="Logo da Empresa" class="header-logo">
+        <h1>Bem-vindo ao Painel de Controle</h1>
+    </header>
+    
+    <div class="carousel-container">
+        
+        <div class="carousel-controls">
+            <button class="carousel-btn btn-left" id="prevBtn">&#10094;</button>
+            <button class="carousel-btn btn-right" id="nextBtn">&#10095;</button>
+        </div>
+
+        <main class="dashboard" id="cardContainer">
+            
+            <a href="cadastro-de-clientes.html" class="card">
+                <img src="cadastro-de-cliente.png" alt="Ícone de Cadastro de Cliente" class="card-icon">
+                <div class="card-textos"><h2>Cadastro de Clientes</h2><p>Gerencie informações de clientes.</p></div>
+            </a>
+            <a href="cadastro-de-produtos.html" class="card">
+                <img src="icone-produtos.png" alt="Ícone de Cadastro de Produtos" class="card-icon">
+                <div class="card-textos"><h2>Cadastro de Produtos</h2><p>Adicione e edite os produtos da loja.</p></div>
+            </a>
+            <a href="precificacao.html" class="card">
+                <img src="icone-precificacao.png" alt="Ícone de Precificação" class="card-icon">
+                <div class="card-textos"><h2>Precificação</h2><p>Defina e ajuste os preços de venda.</p></div>
+            </a>
+            <a href="vendas.html" class="card">
+                <img src="icone-vendas.png" alt="Ícone de Vendas" class="card-icon">
+                <div class="card-textos"><h2>Vendas</h2><p>Registre e visualize todas as transações de venda.</p></div>
+            </a>
+            <a href="calculadora.html" class="card">
+                <img src="calculadora.png" alt="Ícone de Clientes" class="card-icon">
+                <div class="card-textos"><h2>Calculadora</h2><p>Listagem e visão geral dos clientes.</p></div>
+            </a>
+            <a href="relatorios.html" class="card">
+                <img src="icone-relatorios.png" alt="Ícone de Relatórios" class="card-icon">
+                <div class="card-textos"><h2>Relatórios e Análises</h2><p>Veja gráficos de desempenho e relatórios detalhados.</p></div>
+            </a>
+            <a href="estoque.html" class="card">
+                <img src="icone-estoque.png" alt="Ícone de Estoque" class="card-icon">
+                <div class="card-textos"><h2>Estoque</h2><p>Acompanhe a quantidade e localização dos produtos.</p></div>
+            </a>
+
+        </main>
+
+    </div>
+
+    <script src="inicio.js" defer></script>
+</body>
+</html>

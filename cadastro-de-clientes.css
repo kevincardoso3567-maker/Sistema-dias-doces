@@ -1,0 +1,298 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 0;
+}
+
+/* ---------------------------------- */
+/* ESTILOS DO CABEÇALHO (Header) */
+/* ---------------------------------- */
+.header-cadastro {
+    /* Fundo do cabeçalho na cor #ffaa32 */
+    background-color: #ffaa32;
+    padding: 10px 30px;
+    border-bottom: 3px solid #e5992e;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* Adicionado flex-wrap para responsividade */
+    flex-wrap: wrap; 
+}
+
+.header-logo-cadastro {
+    max-width: 80px; /* Levemente menor para telas pequenas */
+    height: auto;
+}
+
+.header-cadastro h1 {
+    /* Cor do título do cabeçalho para contraste */
+    color: #333;
+    font-size: 1.8em;
+    margin: 0;
+    flex-grow: 1;
+    text-align: center;
+    min-width: 0; /* Permite que o título encolha se necessário */
+    padding: 0 10px;
+}
+
+/* Estilos do Botão Voltar */
+.btn-voltar {
+    /* Fundo do botão branco */
+    background-color: white;
+    /* Texto do botão na cor #ffaa32 */
+    color: #ffaa32;
+    text-decoration: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    font-weight: bold;
+    border: 1px solid #ffaa32;
+    transition: background-color 0.3s, color 0.3s;
+    font-size: 0.9em;
+}
+
+.btn-voltar:hover {
+    /* Efeito de hover: inverte as cores */
+    background-color: #e5992e;
+    color: white;
+}
+
+/* ---------------------------------- */
+/* ESTILOS DO CONTEÚDO (Formulário e Tabela) */
+/* ---------------------------------- */
+.container {
+    max-width: 1000px;
+    margin: 30px auto;
+    /* Ajustado padding para telas menores */
+    padding: 20px 15px; 
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.lista-header {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Espaço entre o título e o botão Desfazer */
+    flex-wrap: wrap; /* Permite que os itens quebrem em telas menores */
+}
+
+.container h2 {
+    color: #ffaa32;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 10px;
+    margin-top: 20px;
+    font-size: 1.5em; 
+}
+.lista-header h2 {
+    margin-bottom: 0; 
+}
+
+.form-cadastro {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.input-group {
+    /* Padrão para telas maiores: 45% */
+    flex: 1 1 45%; 
+    min-width: 250px; 
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #444;
+}
+
+.form-cadastro input {
+    /* Ajustado para 100% de largura do grupo de input, usando box-sizing */
+    width: 100%; 
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    /* Essencial para responsividade e layout: inclui padding e border na largura */
+    box-sizing: border-box; 
+}
+
+.btn-salvar {
+    background-color: #5cb85c; /* Verde */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    margin-top: 10px;
+    width: auto; /* Deixa o botão se ajustar ao conteúdo em telas grandes */
+}
+
+/* ---------------------------------- */
+/* ESTILOS DA TABELA (CORRIGIDOS) */
+/* ---------------------------------- */
+.tabela-container {
+    /* Essencial para tabelas em mobile: barra de rolagem horizontal se a tabela for maior */
+    overflow-x: auto; 
+    margin-top: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    /* Largura mínima removida para confiar na largura de 100% */
+}
+
+table th, table td {
+    padding: 10px; 
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    font-size: 0.9em; 
+    
+    /* CORREÇÃO CHAVE: Remove nowrap para permitir que o texto quebre */
+    white-space: normal; 
+    /* Adiciona quebra de palavra para evitar que palavras muito longas se estendam para fora */
+    word-break: break-word; 
+}
+
+table th {
+    background-color: #ffaa32;
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* Estilos para a célula de Ações na tabela */
+.acoes-botoes {
+    /* Permite que os botões fiquem lado a lado ou quebrem */
+    display: flex; 
+    flex-wrap: wrap; 
+    gap: 5px;
+    /* Ajuste para garantir que a coluna de Ações não fique muito larga */
+    min-width: 100px; 
+    /* Permite que esta célula se ajuste melhor no layout */
+    white-space: nowrap; 
+}
+
+.acoes-botoes button {
+    margin: 0;
+    flex-shrink: 0;
+}
+
+/* Estilo para o botão Editar (Azul) e Excluir (Vermelho) */
+.btn-editar, .btn-excluir {
+    padding: 5px 8px;
+    font-size: 0.8em;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-editar {
+    background-color: #1877f2;
+    color: white;
+}
+.btn-editar:hover {
+    background-color: #0d6efd;
+}
+
+.btn-excluir {
+    background-color: #d9534f; 
+    color: white;
+}
+.btn-excluir:hover {
+    background-color: #c9302c;
+}
+
+/* Estilo para o botão Desfazer (Undo) */
+.btn-undo {
+    background-color: #f0ad4e; /* Amarelo/Laranja para Desfazer */
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
+    font-weight: bold;
+    display: none; /* Começa oculto */
+    transition: background-color 0.2s;
+}
+.btn-undo:hover {
+    background-color: #eea236;
+}
+
+/* Estilo para inputs durante a edição na tabela */
+.input-edicao {
+    width: 90%;
+    padding: 4px;
+    border: 1px solid #ffaa32;
+    border-radius: 3px;
+    box-sizing: border-box;
+}
+
+/* ================================== */
+/* MEDIA QUERIES PARA RESPONSIVIDADE */
+/* ================================== */
+
+/* Para telas pequenas (smartphones, até 600px) */
+@media (max-width: 600px) {
+    
+    /* --- Cabeçalho --- */
+    .header-cadastro {
+        padding: 10px 15px;
+        /* Altera a ordem e o fluxo dos itens em telas pequenas */
+        justify-content: space-around; 
+    }
+
+    .header-logo-cadastro {
+        order: 1; 
+        max-width: 60px;
+    }
+    
+    .btn-voltar {
+        order: 2; 
+        padding: 6px 10px;
+        font-size: 0.8em;
+    }
+
+    .header-cadastro h1 {
+        order: 3; /* Vai para a próxima linha */
+        flex-basis: 100%; /* Ocupa a linha inteira */
+        font-size: 1.5em; 
+        margin-top: 5px;
+    }
+
+    /* --- Container e Formulário --- */
+    .container {
+        margin: 15px;
+        padding: 15px;
+    }
+
+    .input-group {
+        /* Ocupa 100% da largura em telas pequenas */
+        flex: 1 1 100%; 
+        min-width: 100%;
+    }
+    
+    .btn-salvar {
+        width: 100%; /* Botão Salvar ocupa 100% da largura */
+    }
+
+    .lista-header {
+        flex-direction: column; /* Empilha o título e o botão Desfazer */
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    /* --- Tabela --- */
+    /* A tabela é gerenciada pela rolagem horizontal (overflow-x: auto) */
+    table th, table td {
+        padding: 8px 5px; /* Mais compacto */
+    }
+}
