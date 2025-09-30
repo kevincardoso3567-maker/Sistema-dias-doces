@@ -29,19 +29,19 @@ body {
     padding: 25px;
     transition: transform 0.2s;
     border-top: 5px solid #ffaa32;
-    /* AJUSTE 1: Remove flex-basis e min-width de 100% para permitir que se dividam */
-    flex-grow: 1; /* Permite que o cartão cresça para preencher o espaço disponível */
+    /* AJUSTE SOLICITADO: Adiciona margem inferior para separar os cartões verticalmente */
+    margin-bottom: 30px; 
+    
+    flex-grow: 1; 
     flex-shrink: 1;
-    flex-basis: auto; /* Permite que o tamanho base seja determinado pelo conteúdo (ou media query) */
-    min-width: 250px; /* Garante um tamanho mínimo em telas grandes */
-    margin-bottom: 0;
+    flex-basis: auto; 
+    min-width: 250px; 
 }
 
 /* ESTILO: CARTÃO ESPECÍFICO MENOR (Nome do Produto/Receita) */
 .card-menor {
     padding: 15px 25px;
     border-top: 3px solid #ffaa32;
-    /* AJUSTE 2: Define um tamanho base para o cartão menor, ocupando a largura total por padrão */
     flex-basis: 100%;
 }
 
@@ -63,13 +63,13 @@ body {
 /* AJUSTE 3: Estilo para fazer o card-menor se alinhar ao lado de outro (ex: card de resumo) */
 @media (min-width: 768px) {
     .card-resumo-lateral {
-        flex-basis: calc(33.33% - 20px); /* Exemplo: 1/3 da largura */
+        flex-basis: calc(33.33% - 20px); 
     }
     .card-maior-principal {
-        flex-basis: calc(66.66% - 20px); /* Exemplo: 2/3 da largura */
+        flex-basis: calc(66.66% - 20px); 
     }
     .card-menor {
-        flex-basis: auto; /* Volta ao padrão (crescer para preencher) em telas maiores */
+        flex-basis: auto; 
     }
 }
 
@@ -225,9 +225,10 @@ body {
 }
 
 /* BOTÃO REMOVER (Ações) - E classe de coluna de ações */
-#tabelaIngredientes tbody tr td:nth-child(5),
-#tabelaContas tbody tr td:nth-child(5),
-#tabelaItens tbody tr td:nth-child(5),
+/* Se a estrutura da tabela mudar, ajuste o :nth-child (ex: Ingredientes tem 3 colunas) */
+#tabelaIngredientes tbody tr td:last-child, 
+#tabelaContas tbody tr td:last-child,
+#tabelaItens tbody tr td:last-child,
 .coluna-acoes {
     text-align: center;
     padding: 0;
@@ -251,13 +252,16 @@ body {
 }
 
 /* AJUSTE DE ALINHAMENTO NAS CÉLULAS COM VALOR MONETÁRIO/QUANTIDADE */
-#tabelaIngredientes td:nth-child(2),
-#tabelaIngredientes td:nth-child(4),
+/* Ajustado para Contas e Itens (ainda possuem 4 colunas de dados) */
 #tabelaContas td:nth-child(2),
 #tabelaContas td:nth-child(4),
 #tabelaItens td:nth-child(2),
 #tabelaItens td:nth-child(4)
 {
+    text-align: right !important;
+}
+/* Ajuste específico para a nova tabela de Ingredientes (2ª coluna é o Valor Total de Compra) */
+#tabelaIngredientes td:nth-child(2) {
     text-align: right !important;
 }
 
@@ -320,7 +324,7 @@ body {
 
 .row-selecao-permanente {
     background-color: #e9f5e9;
-    border-top: 2px solid #28a745;
+    border-top: 2_px solid #28a745;
 }
 .tabela-resumo {
     width: 100%;
@@ -330,6 +334,21 @@ body {
 .tabela-resumo tr:last-child {
     font-weight: bold;
     border-top: 2px solid #ccc;
+}
+
+/* Novo estilo para o botão de adicionar ingredientes no topo da tabela */
+.btn-adicionar-ingrediente {
+    background-color: #007bff; 
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+.btn-adicionar-ingrediente:hover {
+    background-color: #0056b3; 
 }
 
 
@@ -399,6 +418,7 @@ body {
     .input-produto-card,
     .btn-voltar,
     .btn-pdf,
+    .btn-adicionar-ingrediente,
     /* Oculta as tabelas detalhadas conforme solicitado */
     #ingredientes-card-pdf,
     #contas-card-pdf,
@@ -498,4 +518,75 @@ body {
         display: block;
         font-weight: bold;
     }
+}
+
+
+/* ========================================================================= */
+/* 8. ESTILOS DO MODAL DE SELEÇÃO (BLOCOS ADICIONADOS PARA ABRIR O MODAL) */
+/* ========================================================================= */
+.modal-overlay {
+    /* POSICIONAMENTO: Ocupa a tela inteira, fixo, acima de todo o conteúdo */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    
+    /* CAMADA: Garante que fique acima de todos os outros elementos */
+    z-index: 2000; 
+    
+    /* VISUAL: Fundo semi-transparente para focar no modal */
+    background: rgba(0, 0, 0, 0.7); 
+    
+    /* CENTRALIZAÇÃO: Usa flexbox para centralizar o conteúdo */
+    display: none; /* Por padrão, deve estar invisível, o JS muda para 'flex' */
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    /* TAMANHO E FORMA: A caixa branca do modal */
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 450px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+    position: relative;
+    
+    /* ESTILOS DE INPUTS INTERNOS */
+    text-align: center;
+}
+
+.modal-content h3 {
+    color: #ffaa32;
+    margin-top: 0;
+    font-size: 1.5em;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.modal-content select {
+    width: 100%;
+    padding: 12px;
+    margin: 15px 0;
+    font-size: 1em;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+}
+
+.close-button {
+    /* BOTÃO 'X' */
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 1.8em;
+    cursor: pointer;
+    color: #888;
+    transition: color 0.2s;
+}
+
+.close-button:hover {
+    color: #333;
 }
