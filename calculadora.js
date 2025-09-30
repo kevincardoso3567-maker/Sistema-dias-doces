@@ -46,7 +46,7 @@ function formatarMoeda(input) {
 }
 
 const formatarMoedaExibicao = (valor) => {
-    // Mantém a precisão de 4 casas decimais para todos os custos unitários/por hora
+    // Mantém a precisão de 2 a 4 casas decimais
     return parseFloat(valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 4 });
 };
 
@@ -118,32 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
     renderizarTabelaItens(); 
 
     // =================================================================
-    // FUNÇÕES DE CÁLCULO (INGREDIENTES)
-    // =================================================================
-    
-    function converterParaUnidadeBase(quantidade, unidade) {
-        switch (unidade) {
-            case 'unidade': return quantidade;
-            case 'grama':
-            case 'mililitro': return quantidade;
-            case 'quilograma':
-            case 'litro': return quantidade * 1000;
-            default: return quantidade;
-        }
-    }
-
-    function calcularCustoUnitario(valorPago, quantidadeEmbalagem, unidadeMedida) {
-        const valorNumerico = parseFloat(removeMascara(valorPago));
-        if (isNaN(valorNumerico) || valorNumerico <= 0) return 0;
-        
-        const quantidadeBase = converterParaUnidadeBase(quantidadeEmbalagem, unidadeMedida);
-        if (quantidadeBase <= 0) return 0;
-
-        return valorNumerico / quantidadeBase;
-    }
-
-    // =================================================================
-    // FUNÇÕES DE CÁLCULO (CONTAS)
+    // FUNÇÕES DE CÁLCULO (CONTAS) - Permanecem as mesmas
     // =================================================================
     
     const DIAS_MES = 30;
@@ -159,7 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // =================================================================
-    // FUNÇÕES DE CÁLCULO (ITENS)
+    // FUNÇÕES DE CÁLCULO (ITENS) - Permanecem as mesmas
     // =================================================================
     
     function calcularPrecoPorUnidade(precoTotal, quantidade) {
@@ -173,32 +148,27 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // =================================================================
-    // MANIPULAÇÃO DO FORMULÁRIO (INGREDIENTES)
+    // MANIPULAÇÃO DO FORMULÁRIO (INGREDIENTES) - MODIFICADA
     // =================================================================
 
     formIngrediente.addEventListener('submit', function(event) {
         event.preventDefault();
 
         const ingredienteNome = document.getElementById('ingredienteNome').value;
-        const quantidadeEmbalagem = parseFloat(document.getElementById('quantidadeEmbalagem').value);
-        const unidadeMedida = document.getElementById('unidadeMedida').value;
         const valorPagoInput = document.getElementById('valorPago');
         const valorPago = valorPagoInput.value;
         const localCompra = document.getElementById('localCompra').value;
 
-        if (isNaN(quantidadeEmbalagem) || quantidadeEmbalagem <= 0 || !unidadeMedida) {
-            alert("Por favor, preencha a quantidade da embalagem e selecione a unidade de medida.");
+        // Se o ingrediente ou valor não foram preenchidos
+        if (!ingredienteNome.trim() || !valorPago.trim()) {
+            alert("Por favor, preencha o nome do ingrediente e o valor pago.");
             return;
         }
-        
-        const custoUnitario = calcularCustoUnitario(valorPago, quantidadeEmbalagem, unidadeMedida);
 
         const novoIngrediente = {
             nome: ingredienteNome,
-            quantidade: quantidadeEmbalagem,
-            unidade: unidadeMedida,
+            // Armazenamos o valor numérico para consistência
             valor: parseFloat(removeMascara(valorPago)),
-            custoUnitario: custoUnitario,
             local: localCompra || 'N/A'
         };
 
@@ -210,7 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // =================================================================
-    // MANIPULAÇÃO DO FORMULÁRIO (CONTAS)
+    // MANIPULAÇÃO DO FORMULÁRIO (CONTAS) - Permanece a mesma
     // =================================================================
 
     formConta.addEventListener('submit', function(event) {
@@ -243,7 +213,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // =================================================================
-    // MANIPULAÇÃO DO FORMULÁRIO (ITENS)
+    // MANIPULAÇÃO DO FORMULÁRIO (ITENS) - Permanece a mesma
     // =================================================================
     
     formItem.addEventListener('submit', function(event) {
@@ -277,7 +247,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // =================================================================
-    // MANIPULAÇÃO DA TABELA (INGREDIENTES)
+    // MANIPULAÇÃO DA TABELA (INGREDIENTES) - MODIFICADA
     // =================================================================
 
     function renderizarTabelaIngredientes() {
@@ -286,20 +256,9 @@ document.addEventListener('DOMContentLoaded', () => {
         ingredientes.forEach((item, index) => {
             const row = listaIngredientes.insertRow();
             
+            // Colunas: Ingrediente, Valor Pago, Local da Compra, Ações
             row.insertCell().textContent = item.nome;
-            row.insertCell().textContent = item.quantidade;
-
-            let unidadeExibicao = item.unidade.charAt(0).toUpperCase() + item.unidade.slice(1);
-            if (item.unidade === 'quilograma') unidadeExibicao = 'Kg';
-            if (item.unidade === 'litro') unidadeExibicao = 'L';
-            if (item.unidade === 'grama') unidadeExibicao = 'g';
-            if (item.unidade === 'mililitro') unidadeExibicao = 'ml';
-            row.insertCell().textContent = unidadeExibicao;
-
-            row.insertCell().textContent = formatarMoedaExibicao(item.valor);
-            
-            row.insertCell().textContent = formatarMoedaExibicao(item.custoUnitario); 
-            
+            row.insertCell().textContent = formatarMoedaExibicao(item.valor); 
             row.insertCell().textContent = item.local;
 
             const acoesCell = row.insertCell();
@@ -330,7 +289,7 @@ document.addEventListener('DOMContentLoaded', () => {
     btnLimparIngredientes.addEventListener('click', limparTabelaIngredientes);
 
     // =================================================================
-    // MANIPULAÇÃO DA TABELA (CONTAS)
+    // MANIPULAÇÃO DA TABELA (CONTAS) - Permanece a mesma
     // =================================================================
     
     function renderizarTabelaContas() {
@@ -371,7 +330,7 @@ document.addEventListener('DOMContentLoaded', () => {
     btnLimparContas.addEventListener('click', limparTabelaContas);
 
     // =================================================================
-    // MANIPULAÇÃO DA TABELA (ITENS)
+    // MANIPULAÇÃO DA TABELA (ITENS) - Permanece a mesma
     // =================================================================
     
     function renderizarTabelaItens() {
