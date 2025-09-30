@@ -38,7 +38,12 @@
             text-align: right; 
             font-weight: bold; 
             padding: 8px;
+            /* Estilo para indicar que o campo é readonly/calculado */
+            color: #28a745; 
+            pointer-events: none; /* Impede clique */
         }
+        
+        /* O estilo original de resumo-produto está no CSS principal */
         
         .total-container {
             display: flex;
@@ -84,6 +89,17 @@
             border-radius: 4px;
             cursor: pointer;
         }
+        /* Novo estilo para o botão de adicionar */
+        .btn-adicionar-ingrediente {
+            background-color: #007bff; 
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
 
         .row-selecao-permanente {
             background-color: #e9f5e9;
@@ -101,6 +117,7 @@
     </style>
 </head>
 <body>
+    <div id="header-print" style="display: none;"></div>
 
     <header class="header-calculadora">
         <img src="logo-preta.png" alt="Logo da Empresa" class="header-logo-calculadora">
@@ -121,16 +138,20 @@
         <div id="relatorio-pdf" style="width: 100%;">
             
             <div class="card" id="ingredientes-card-pdf">
-                <h2>1. Ingredientes Usados na Receita</h2>
+                <h2>1. Ingredientes Usados na Receita (Custo Total)</h2>
+                
+                <button id="abrirSelecaoIngrediente" class="btn-adicionar-ingrediente">
+                    + Adicionar Ingrediente (Custo Total)
+                </button>
+                
                 <div class="tabela-container">
                     <table id="tabelaIngredientes">
                         <thead>
                             <tr>
                                 <th>Ingredientes Usados</th>
-                                <th>Custo por Ingrediente (R$/unidade)</th>
-                                <th>Quantidade Usada</th>
-                                <th>Total (R$)</th>
-                                <th class="coluna-acoes">Ações</th> </tr>
+                                <th>Valor Total de Compra (R$)</th>
+                                <th class="coluna-acoes">Ações</th> 
+                            </tr>
                         </thead>
                         <tbody id="listaIngredientesBody">
                             </tbody>
@@ -214,9 +235,9 @@
                 <table class="tabela-resumo">
                     <tbody>
                         <tr class="row-selecao-permanente">
-                            <td style="font-weight: bold;">Mão de Obra (Valor Manual R$):</td>
+                            <td style="font-weight: bold;">Mão de Obra (50% do Subtotal):</td>
                             <td style="text-align: right; padding: 0;">
-                                <input type="number" id="inputMaoDeObra" value="0.00" min="0" step="0.01" class="input-mao-de-obra">
+                                <input type="text" id="inputMaoDeObra" value="0,00" readonly class="input-mao-de-obra">
                             </td>
                         </tr>
                     </tbody>
