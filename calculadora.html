@@ -23,7 +23,9 @@
     <main class="container">
         
         <div class="card calculadora-card">
-            <h2>Calculadora de Ingredientes</h2>
+            <h2>Calculadora de Ingredientes (Custo Total)</h2>
+            
+            <p class="instrucao">Calcule o custo de cada ingrediente para a sua receita, e adicione o valor total pago por ele na compra. Esta seção visa apenas registrar custos e não o custo unitário por peso/volume.</p>
             
             <form id="formAdicionarIngrediente" class="form-entrada">
                 <div class="input-row">
@@ -31,23 +33,6 @@
                     <div class="input-group-calc">
                         <label for="ingredienteNome">Ingrediente:</label>
                         <input type="text" id="ingredienteNome" required placeholder="Ex: Farinha de Trigo">
-                    </div>
-                    
-                    <div class="input-group-calc">
-                        <label for="quantidadeEmbalagem">Quantidade da Embalagem:</label>
-                        <input type="number" id="quantidadeEmbalagem" min="1" required>
-                    </div>
-                    
-                    <div class="input-group-calc">
-                        <label for="unidadeMedida">Unidade de Medida:</label>
-                        <select id="unidadeMedida" required>
-                            <option value="" disabled selected>Selecione</option>
-                            <option value="unidade">Unidade</option>
-                            <option value="grama">Grama (g)</option>
-                            <option value="mililitro">Mililitro (ml)</option>
-                            <option value="quilograma">Quilograma (Kg)</option>
-                            <option value="litro">Litro (L)</option>
-                        </select>
                     </div>
                     
                     <div class="input-group-calc">
@@ -66,7 +51,7 @@
                         <input type="text" id="localCompra" placeholder="Ex: Atacadista X">
                     </div>
                     
-                    <button type="submit" class="btn-adicionar">Adicionar e Calcular</button>
+                    <button type="submit" class="btn-adicionar">Adicionar</button>
                 </div>
             </form>
 
@@ -75,10 +60,7 @@
                     <thead>
                         <tr>
                             <th>Ingrediente</th>
-                            <th>Qtd. Embalagem</th>
-                            <th>Unidade de Medida</th>
                             <th>Valor Pago</th>
-                            <th>Custo Unitário</th>
                             <th>Local da Compra</th>
                             <th>Ações</th>
                         </tr>
