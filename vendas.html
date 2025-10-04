@@ -3,49 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro de Vendas</title>
+    <title>Vendas - Gestão de Negócios</title>
     
-    <link rel="stylesheet" href="vendas.css">
+    <link rel="stylesheet" href="vendas.css"> 
+    
 </head>
 <body>
-
+    
     <header class="header-vendas">
         <img src="logo-preta.png" alt="Logo da Empresa" class="header-logo-vendas">
-        
-        <h1>Registro de Vendas</h1>
-        
-        <a href="inicio.html" class="btn-voltar">Voltar</a>
+        <h1>Registro de Vendas e Dashboard</h1>
+        <a href="inicio.html" class="btn-voltar">Voltar para Início</a>
     </header>
 
+    <div id="modalSelecaoCliente" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Selecione o Cliente</h2>
+            <p>Escolha um cliente cadastrado na lista para registrar a venda.</p>
+            
+            <div id="modalListaClientes">
+                <p>Carregando clientes...</p>
+            </div>
+            
+            <button id="btnConfirmarCliente" disabled>
+                Confirmar Cliente Selecionado
+            </button>
+        </div>
+    </div>
     <main class="container">
         
-        <div class="card vendas-card">
+        <div class="card card-cadastro">
             <h2>Adicionar Nova Venda</h2>
-            
-            <form id="formAdicionarVenda" class="form-entrada">
+            <form id="formAdicionarVenda">
+                
                 <div class="input-row-vendas">
-
-                    <div class="input-group-vendas" style="flex-basis: 100%;">
-                        <label for="vendaCliente">Nome do Cliente:</label>
-                        <input 
-                            type="text" 
-                            id="vendaCliente" 
-                            list="listaClientesCadastrados" 
-                            placeholder="Selecione ou digite o nome"
-                        >
-                        
-                        <datalist id="listaClientesCadastrados">
-                            </datalist>
+                    <div class="input-group-vendas" style="grid-column: 1 / -1;">
+                        <label for="vendaClienteDisplay">Nome do Cliente:</label>
+                        <div class="cliente-selector-group" style="display: flex; gap: 10px;">
+                            <input type="text" id="vendaClienteDisplay" value="Selecione o Cliente" readonly style="cursor: pointer; flex-grow: 1;">
+                            
+                            <button type="button" id="btnAbrirModalCliente" class="btn-adicionar" style="flex-grow: 0; width: 150px; height: 42px;">
+                                Selecionar
+                            </button>
+                        </div>
+                        <input type="hidden" id="vendaCliente" value=""> 
                     </div>
+                </div>
+
+                <div class="input-row-vendas">
                     <div class="input-group-vendas">
-                        <label for="vendaData">Data:</label>
+                        <label for="vendaData">Data da Venda:</label>
                         <input type="date" id="vendaData" required>
                     </div>
 
                     <div class="input-group-vendas">
                         <label for="vendaMes">Mês:</label>
-                        <select id="vendaMes" required>
-                            <option value="" disabled selected>Selecione o Mês</option>
+                        <select id="vendaMes" required disabled>
                             <option value="1">Janeiro</option>
                             <option value="2">Fevereiro</option>
                             <option value="3">Março</option>
@@ -64,64 +78,97 @@
                     <div class="input-group-vendas">
                         <label for="vendaStatus">Status:</label>
                         <select id="vendaStatus" required>
-                            <option value="" disabled selected>Selecione</option>
+                            <option value="" disabled selected>Status</option>
                             <option value="entrada">Entrada</option>
                             <option value="saida">Saída</option>
                         </select>
                     </div>
 
                     <div class="input-group-vendas">
-                        <label for="vendaProduto">Produto:</label>
-                        <select id="vendaProduto" required>
-                            <option value="" disabled selected>Carregando Produtos...</option>
+                        <label for="vendaPagamento">Pagamento:</label>
+                        <select id="vendaPagamento" required>
+                            <option value="" disabled selected>Método de Pagamento</option>
+                            <option value="pix">PIX</option>
+                            <option value="credito">Crédito</option>
+                            <option value="debito">Débito</option>
+                            <option value="dinheiro">Dinheiro</option>
                         </select>
                     </div>
-                    
+                </div>
+
+                <div class="input-row-vendas">
                     <div class="input-group-vendas">
-                        <label for="vendaID">ID:</label>
-                        <input type="text" id="vendaID" readonly placeholder="Preenchimento Automático">
+                        <label for="vendaProduto">Produto:</label>
+                        <select id="vendaProduto" required>
+                            <option value="" disabled selected>Selecione o Produto</option>
+                            </select>
                     </div>
 
                     <div class="input-group-vendas">
-                        <label for="vendaPrecoUnitario">Preço Unitário:</label>
-                        <input 
-                            type="text" 
-                            id="vendaPrecoUnitario" 
-                            readonly
-                            placeholder="R$ 0,00"
-                        >
+                        <label for="vendaID">ID do Produto:</label>
+                        <input type="text" id="vendaID" readonly placeholder="ID (Preenchido Automaticamente)">
+                    </div>
+                    
+                    <div class="input-group-vendas">
+                        <label for="vendaPrecoUnitario">Preço Unitário (R$):</label>
+                        <input type="text" id="vendaPrecoUnitario" placeholder="R$ 0,00" required>
                     </div>
 
                     <div class="input-group-vendas">
                         <label for="vendaQuantidade">Quantidade:</label>
-                        <input type="number" id="vendaQuantidade" min="1" required value="1">
+                        <input type="number" id="vendaQuantidade" value="1" min="1" required>
                     </div>
-                    
-                    <div class="input-group-vendas">
-                        <label for="vendaPrecoFinal">Preço Final:</label>
-                        <input 
-                            type="text" 
-                            id="vendaPrecoFinal" 
-                            readonly
-                            placeholder="Cálculo Automático"
-                        >
-                    </div>
-                    
-                    <div class="input-group-vendas">
-                        <label for="vendaPagamento">Método de Pagamento:</label>
-                        <select id="vendaPagamento" required>
-                            <option value="" disabled selected>Selecione</option>
-                            <option value="pix">PIX</option>
-                            <option value="debito">Débito</option>
-                            <option value="credito">Crédito</option>
-                            <option value="dinheiro">Dinheiro</option>
-                        </select>
-                    </div>
-                    
-                    <button type="submit" class="btn-adicionar">Registrar Venda</button>
-                </div>
-            </form>
 
+                    <div class="input-group-vendas">
+                        <label for="vendaPrecoFinal">Preço Final (R$):</label>
+                        <input type="text" id="vendaPrecoFinal" readonly placeholder="R$ 0,00">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-adicionar" style="width: auto;">Registrar Venda</button>
+            </form>
+        </div>
+
+        <div class="card card-dashboard">
+            <h2>Dashboard Resumo</h2>
+            <div class="input-row-vendas cartoes-destaque">
+                <div class="card-info mes-destaque-card">
+                    <h3>Mês Mais Vendedor (Entrada)</h3>
+                    <p id="mesMaisVendeuNome">N/A</p>
+                    <small id="mesMaisVendeuValor">Total: R$ 0,00</small>
+                </div>
+                <div class="card-info pagamento-destaque-card">
+                    <h3>Método de Pagamento Mais Usado</h3>
+                    <p id="pagamentoMaisUsadoNome">N/A</p>
+                    <small id="pagamentoMaisUsadoContagem">0 transações</small>
+                </div>
+            </div>
+            
+            <h3>Ranking de Produtos Mais Vendidos (Entrada - por Quantidade)</h3>
+            <ul id="rankingLista">
+                <li>Nenhum dado para calcular o ranking.</li>
+            </ul>
+        </div>
+
+        <div class="card faturamento-card">
+            <h2>Faturamento Mensal (Entradas)</h2>
+            <div class="tabela-container">
+                <table id="tabelaFaturamentoMensal">
+                    <thead>
+                        <tr>
+                            <th>Mês</th>
+                            <th>Total Faturado (R$)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="listaFaturamentoMensal">
+                        </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="card vendas-card">
+            <h2>Lista de Vendas Registradas</h2>
+            <button id="btnLimparVendas" class="btn-remover">Limpar Todos os Registros de Venda</button>
             <div class="tabela-container">
                 <table id="tabelaVendas">
                     <thead>
@@ -129,64 +176,24 @@
                             <th>Data</th>
                             <th>Mês</th>
                             <th>Status</th>
-                            <th>Cliente</th> 
+                            <th>Cliente</th>
                             <th>Produto</th>
                             <th>ID</th>
                             <th>Preço Unitário</th>
                             <th>Quantidade</th>
                             <th>Preço Final</th>
-                            <th>Método de Pagamento</th>
+                            <th>Pagamento</th>
                             <th>Ações</th>
                         </tr>
                     </thead>
                     <tbody id="listaVendas">
-                    </tbody>
-                </table>
-            </div>
-            <button id="btnLimparVendas" class="btn-limpar">Limpar Tabela Vendas</button>
-        </div>
-        
-        <div class="card ranking-card">
-            <h2>Ranking: Produtos Mais Vendidos (Quantidade)</h2>
-            <ol id="rankingLista">
-                <li>Nenhum dado de venda para calcular o ranking.</li>
-            </ol>
-        </div>
-
-        <div class="cartoes-destaque">
-            
-            <div class="card mes-destaque-card" id="mesMaisVendeuCard">
-                <h3>Mês de Maior Faturamento</h3>
-                <p id="mesMaisVendeuNome">N/A</p>
-                <small id="mesMaisVendeuValor">Total: R$ 0,00</small>
-            </div>
-            
-            <div class="card pagamento-destaque-card" id="pagamentoMaisUsadoCard">
-                <h3>Método de Pagamento Principal</h3>
-                <p id="pagamentoMaisUsadoNome">N/A</p>
-                <small id="pagamentoMaisUsadoContagem">0 transações</small>
-            </div>
-
-        </div>
-        
-        <div class="card faturamento-card">
-            <h2>Resumo de Faturamento Mensal (Entradas)</h2>
-            <div class="tabela-container">
-                <table id="tabelaFaturamentoMensal">
-                    <thead>
-                        <tr>
-                            <th>Mês</th>
-                            <th>Total Faturado</th>
-                        </tr>
-                    </thead>
-                    <tbody id="listaFaturamentoMensal">
-                    </tbody>
+                        </tbody>
                 </table>
             </div>
         </div>
         
     </main>
 
-    <script src="vendas.js"></script> 
+    <script src="vendas.js"></script>
 </body>
 </html>
