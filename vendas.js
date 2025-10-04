@@ -23,10 +23,10 @@ const formatarMoedaExibicao = (valor) => {
 
 let vendas = []; 
 let produtosCadastrados = []; 
-let clientesCadastrados = []; // <-- NOVO: Array para guardar clientes
+let clientesCadastrados = []; 
 const VENDAS_KEY = 'registrosVendas'; 
 const PRODUTOS_KEY = 'produtosCadastrados'; 
-const CLIENTES_KEY = 'clientes'; // <-- NOVO: Chave de clientes (do cadastro-de-clientes.js)
+const CLIENTES_KEY = 'clientes'; 
 
 function salvarVendas() {
     localStorage.setItem(VENDAS_KEY, JSON.stringify(vendas)); 
@@ -35,21 +35,11 @@ function salvarVendas() {
 function carregarDados() {
     const vendasSalvas = localStorage.getItem(VENDAS_KEY);
     const produtosSalvos = localStorage.getItem(PRODUTOS_KEY); 
-    const clientesSalvos = localStorage.getItem(CLIENTES_KEY); // <-- NOVO
+    const clientesSalvos = localStorage.getItem(CLIENTES_KEY); 
 
-    if (vendasSalvas) {
-        vendas = JSON.parse(vendasSalvas);
-    }
-    if (produtosSalvos) {
-        produtosCadastrados = JSON.parse(produtosSalvos); 
-    }
-    // NOVO: Carrega os clientes
-    if (clientesSalvos) {
-        clientesCadastrados = JSON.parse(clientesSalvos); 
-    }
-    if (!produtosCadastrados) {
-        produtosCadastrados = [];
-    }
+    vendas = vendasSalvas ? JSON.parse(vendasSalvas) : [];
+    produtosCadastrados = produtosSalvos ? JSON.parse(produtosSalvos) : [];
+    clientesCadastrados = clientesSalvos ? JSON.parse(clientesSalvos) : [];
 }
 
 // =================================================================
@@ -61,7 +51,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const listaVendas = document.getElementById('listaVendas');
     
     // CAMPOS DE ENTRADA DE VENDAS
-    const vendaClienteInput = document.getElementById('vendaCliente');
+    const vendaClienteInput = document.getElementById('vendaCliente'); 
+    const vendaClienteDisplay = document.getElementById('vendaClienteDisplay'); 
     const vendaDataInput = document.getElementById('vendaData');
     const vendaMesSelect = document.getElementById('vendaMes');
     const vendaProdutoSelect = document.getElementById('vendaProduto');
@@ -73,6 +64,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const vendaPagamentoSelect = document.getElementById('vendaPagamento');
     const vendaStatusSelect = document.getElementById('vendaStatus');
     const rankingLista = document.getElementById('rankingLista'); 
+
+    // VARIÁVEIS DO MODAL DE CLIENTES
+    const modal = document.getElementById('modalSelecaoCliente');
+    const btnAbrirModal = document.getElementById('btnAbrirModalCliente');
+    const btnFecharModal = document.querySelector('#modalSelecaoCliente .close-btn');
+    const listaModal = document.getElementById('modalListaClientes');
+    const btnConfirmar = document.getElementById('btnConfirmarCliente');
     
     // Elementos dos Cartões de Destaque
     const mesMaisVendeuNome = document.getElementById('mesMaisVendeuNome');
@@ -83,9 +81,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Elemento da Tabela de Faturamento Mensal
     const listaFaturamentoMensal = document.getElementById('listaFaturamentoMensal'); 
     
+    // --- INICIALIZAÇÃO ---
     carregarDados();
     preencherOpcoesProdutos();
-    preencherOpcoesClientes(); // <-- NOVO: Chama o preenchimento do datalist de clientes
     renderizarTabelaVendas();
     renderizarRanking();
     renderizarMesMaisVendedor();
@@ -94,28 +92,45 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const hoje = new Date().toISOString().split('T')[0];
     vendaDataInput.value = hoje;
-    
     atualizarMesComBaseNaData(); 
-
 
     // --- FUNÇÕES DE LÓGICA DE DADOS ---
     
-    // NOVO: Preenche o datalist com os nomes dos clientes cadastrados
-    function preencherOpcoesClientes() {
-        const datalistClientes = document.getElementById('listaClientesCadastrados');
-        if (!datalistClientes) return;
-
-        datalistClientes.innerHTML = ''; 
-
-        if (clientesCadastrados && clientesCadastrados.length > 0) {
-            clientesCadastrados.forEach(cliente => {
-                const option = document.createElement('option');
-                option.value = cliente.nome;
-                datalistClientes.appendChild(option);
-            });
+    function popularModalClientes() {
+        listaModal.innerHTML = ''; 
+        
+        if (clientesCadastrados.length === 0) {
+            listaModal.innerHTML = '<p>Nenhum cliente cadastrado. <a href="cadastro-de-clientes.html">Cadastre um cliente primeiro.</a></p>';
+            btnConfirmar.disabled = true;
+            return;
         }
-    }
+        
+        btnConfirmar.disabled = true;
 
+        clientesCadastrados.forEach(cliente => {
+            const label = document.createElement('label');
+            
+            const radio = document.createElement('input');
+            radio.type = 'radio';
+            radio.name = 'selecaoCliente';
+            radio.value = cliente.nome; 
+            
+            const spanNome = document.createElement('span');
+            spanNome.textContent = cliente.nome;
+            
+            label.appendChild(radio);
+            label.appendChild(spanNome);
+            
+            listaModal.appendChild(label);
+        });
+
+        // Habilita o botão ao selecionar um item
+        listaModal.addEventListener('change', function(e) {
+            if (e.target.type === 'radio') {
+                btnConfirmar.disabled = false;
+            }
+        });
+    }
 
     function atualizarMesComBaseNaData() {
         const dataValor = vendaDataInput.value;
@@ -147,7 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function preencherOpcoesProdutos() {
         vendaProdutoSelect.innerHTML = '<option value="" disabled selected>Selecione o Produto</option>';
 
-        if (produtosCadastrados && produtosCadastrados.length > 0) {
+        if (produtosCadastrados.length > 0) {
             produtosCadastrados.forEach(produto => {
                 const option = document.createElement('option');
                 option.value = produto.id; 
@@ -181,13 +196,44 @@ document.addEventListener('DOMContentLoaded', () => {
         calcularPrecoFinal();
     }
     
-    // --- EVENT LISTENERS ---
+    // --- EVENT LISTENERS DO MODAL DE CLIENTES ---
+
+    btnAbrirModal.onclick = function() {
+        popularModalClientes();
+        modal.style.display = 'block';
+    }
+
+    btnFecharModal.onclick = function() {
+        modal.style.display = 'none';
+    }
+
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = 'none';
+        }
+    }
+    
+    btnConfirmar.onclick = function() {
+        const radioSelecionado = document.querySelector('input[name="selecaoCliente"]:checked');
+        
+        if (radioSelecionado) {
+            const nomeCliente = radioSelecionado.value;
+            
+            vendaClienteInput.value = nomeCliente;
+            vendaClienteDisplay.value = nomeCliente;
+            
+            modal.style.display = 'none';
+        } else {
+            alert("Por favor, selecione um cliente.");
+        }
+    }
+
+    // --- OUTROS EVENT LISTENERS ---
     
     vendaDataInput.addEventListener('change', atualizarMesComBaseNaData); 
     vendaProdutoSelect.addEventListener('change', atualizarCamposProduto);
     vendaQuantidadeInput.addEventListener('input', calcularPrecoFinal);
 
-    // Formata o preço unitário ao sair do campo
     vendaPrecoUnitarioInput.addEventListener('blur', function() {
         let valor = vendaPrecoUnitarioInput.value.trim();
         const valorNumerico = parseFloat(removeMascara(valor));
@@ -203,6 +249,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     formAdicionarVenda.addEventListener('submit', function(event) {
         event.preventDefault();
+
+        const nomeClienteSelecionado = vendaClienteInput.value.trim();
+        
+        if (!nomeClienteSelecionado || nomeClienteSelecionado === "Selecione o Cliente") {
+            alert("Por favor, selecione um Cliente. Use o botão 'Selecionar'.");
+            btnAbrirModal.focus();
+            return;
+        }
 
         if (vendaProdutoSelect.value === "") {
             alert("Por favor, selecione um Produto.");
@@ -228,7 +282,7 @@ document.addEventListener('DOMContentLoaded', () => {
             data: vendaDataInput.value,
             mes: vendaMesSelect.value, 
             status: vendaStatusSelect.value,
-            cliente: vendaClienteInput.value.trim() || 'N/A',
+            cliente: nomeClienteSelecionado, 
             produto: vendaProdutoSelect.options[vendaProdutoSelect.selectedIndex].textContent,
             id: vendaIDInput.value,
             precoUnitario: precoUnitarioNumerico, 
@@ -248,6 +302,7 @@ document.addEventListener('DOMContentLoaded', () => {
         formAdicionarVenda.reset();
         
         // Reset manual
+        const hoje = new Date().toISOString().split('T')[0];
         vendaDataInput.value = hoje; 
         atualizarMesComBaseNaData(); 
         
@@ -255,36 +310,32 @@ document.addEventListener('DOMContentLoaded', () => {
         vendaPrecoUnitarioInput.value = '';
         vendaPrecoFinalInput.value = '';
         vendaQuantidadeInput.value = 1; 
+        
+        // Reset dos campos de Cliente
+        vendaClienteInput.value = '';
+        vendaClienteDisplay.value = 'Selecione o Cliente'; 
     });
 
 
-    // --- LÓGICA DA TABELA DE FATURAMENTO MENSAL (Entradas) ---
+    // --- LÓGICA DE DASHBOARD E TABELAS ---
 
     function calcularFaturamentoMensal() {
         const faturamentoPorMes = {};
-        
-        for(let i = 1; i <= 12; i++) {
-            faturamentoPorMes[i] = 0.00;
-        }
-
+        for(let i = 1; i <= 12; i++) { faturamentoPorMes[i] = 0.00; }
         vendas.forEach(venda => {
             if (venda.status === 'entrada') { 
                 const mesNumero = parseInt(venda.mes);
-                const faturamento = venda.precoFinal; 
-
                 if (faturamentoPorMes.hasOwnProperty(mesNumero)) {
-                    faturamentoPorMes[mesNumero] += faturamento;
+                    faturamentoPorMes[mesNumero] += venda.precoFinal;
                 }
             }
         });
-        
         return faturamentoPorMes;
     }
     
     function renderizarTabelaFaturamentoMensal() {
         const faturamentoDados = calcularFaturamentoMensal();
         listaFaturamentoMensal.innerHTML = '';
-        
         const mesMaisVendedorNome = document.getElementById('mesMaisVendeuNome').textContent;
         
         for (let i = 1; i <= 12; i++) {
@@ -293,7 +344,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const total = faturamentoDados[i] || 0.00;
 
             row.insertCell(0).textContent = mesNome;
-            
             const totalCell = row.insertCell(1);
             totalCell.textContent = formatarMoedaExibicao(total);
             totalCell.style.textAlign = 'right';
@@ -305,9 +355,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-
-    // --- LÓGICA DOS CARTÕES DE DESTAQUE E RANKING ---
-
     function calcularMesMaisVendedor() {
         const faturamentoPorMes = {};
         let mesMaisVendedor = null;
@@ -317,33 +364,23 @@ document.addEventListener('DOMContentLoaded', () => {
             if (venda.status === 'entrada') { 
                 const mesNumero = parseInt(venda.mes);
                 const faturamento = venda.precoFinal; 
-
-                if (!faturamentoPorMes[mesNumero]) {
-                    faturamentoPorMes[mesNumero] = 0;
-                }
-                
+                if (!faturamentoPorMes[mesNumero]) { faturamentoPorMes[mesNumero] = 0; }
                 faturamentoPorMes[mesNumero] += faturamento;
             }
         });
 
         for (const mesNumero in faturamentoPorMes) {
             const total = faturamentoPorMes[mesNumero];
-            
             if (total > maiorFaturamento) {
                 maiorFaturamento = total;
                 mesMaisVendedor = MESES_NOMES[parseInt(mesNumero) - 1]; 
             }
         }
-
-        return { 
-            nome: mesMaisVendedor, 
-            valor: maiorFaturamento 
-        };
+        return { nome: mesMaisVendedor, valor: maiorFaturamento };
     }
 
     function renderizarMesMaisVendedor() {
         const resultado = calcularMesMaisVendedor();
-
         if (resultado.nome) {
             mesMaisVendeuNome.textContent = resultado.nome;
             mesMaisVendeuValor.textContent = `Total: ${formatarMoedaExibicao(resultado.valor)}`;
@@ -361,18 +398,13 @@ document.addEventListener('DOMContentLoaded', () => {
         vendas.forEach(venda => {
             if (venda.status === 'entrada') { 
                 const metodo = venda.metodoPagamento;
-                
-                if (!contagemPorMetodo[metodo]) {
-                    contagemPorMetodo[metodo] = 0;
-                }
-                
+                if (!contagemPorMetodo[metodo]) { contagemPorMetodo[metodo] = 0; }
                 contagemPorMetodo[metodo]++;
             }
         });
 
         for (const metodo in contagemPorMetodo) {
             const contagem = contagemPorMetodo[metodo];
-            
             if (contagem > maiorContagem) {
                 maiorContagem = contagem;
                 metodoMaisUsado = metodo;
@@ -382,16 +414,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const nomeFormatado = metodoMaisUsado 
             ? metodoMaisUsado.charAt(0).toUpperCase() + metodoMaisUsado.slice(1)
             : null;
-
-        return { 
-            nome: nomeFormatado, 
-            contagem: maiorContagem 
-        };
+        return { nome: nomeFormatado, contagem: maiorContagem };
     }
 
     function renderizarMetodoPagamentoMaisUsado() {
         const resultado = calcularMetodoPagamentoMaisUsado();
-
         if (resultado.nome) {
             pagamentoMaisUsadoNome.textContent = resultado.nome;
             pagamentoMaisUsadoContagem.textContent = `${resultado.contagem} transações`;
@@ -404,23 +431,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function calcularRanking() {
         const ranking = {};
-
         vendas.forEach(venda => {
             if (venda.status === 'entrada') { 
                 const nome = venda.produto;
                 const quantidade = venda.quantidade;
-                
-                if (ranking[nome]) {
-                    ranking[nome] += quantidade;
-                } else {
-                    ranking[nome] = quantidade;
-                }
+                ranking[nome] = (ranking[nome] || 0) + quantidade;
             }
         });
-
         const rankingArray = Object.entries(ranking);
         rankingArray.sort((a, b) => b[1] - a[1]);
-
         return rankingArray;
     }
 
@@ -435,7 +454,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         rankingDados.forEach(([produto, totalQuantidade], index) => {
             const li = document.createElement('li');
-            
             const rankNumber = index + 1;
             
             const tituloSpan = document.createElement('span');
@@ -449,23 +467,16 @@ document.addEventListener('DOMContentLoaded', () => {
             li.appendChild(tituloSpan);
             li.appendChild(subtituloSpan);
 
-            if (index === 0) {
-                li.classList.add('ranking-gold');
-            } else if (index === 1) {
-                li.classList.add('ranking-silver');
-            } else if (index === 2) {
-                li.classList.add('ranking-bronze');
-            }
+            if (index === 0) { li.classList.add('ranking-gold'); } 
+            else if (index === 1) { li.classList.add('ranking-silver'); } 
+            else if (index === 2) { li.classList.add('ranking-bronze'); }
 
             rankingLista.appendChild(li);
         });
     }
 
-    // --- MANIPULAÇÃO DA TABELA PRINCIPAL DE VENDAS ---
-
     function renderizarTabelaVendas() {
         listaVendas.innerHTML = '';
-
         vendas.forEach((item, index) => {
             const row = listaVendas.insertRow();
             
@@ -473,19 +484,15 @@ document.addEventListener('DOMContentLoaded', () => {
             
             const statusDiv = document.createElement('span');
             statusDiv.textContent = item.status.charAt(0).toUpperCase() + item.status.slice(1);
-            
-            if (item.status === 'entrada') {
-                statusDiv.classList.add('status-entrada');
-            } else if (item.status === 'saida') {
-                statusDiv.classList.add('status-saida');
-            }
+            if (item.status === 'entrada') { statusDiv.classList.add('status-entrada'); } 
+            else if (item.status === 'saida') { statusDiv.classList.add('status-saida'); }
             
             let i = 0;
             row.insertCell(i++).textContent = item.data;
             row.insertCell(i++).textContent = mesNome;
             
             const statusCell = row.insertCell(i++);
-            statusCell.appendChild(statusDiv); // Status inserido corretamente
+            statusCell.appendChild(statusDiv); 
             
             row.insertCell(i++).textContent = item.cliente || 'N/A';
             row.insertCell(i++).textContent = item.produto;
