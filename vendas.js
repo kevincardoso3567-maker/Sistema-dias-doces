@@ -23,8 +23,10 @@ const formatarMoedaExibicao = (valor) => {
 
 let vendas = []; 
 let produtosCadastrados = []; 
-const VENDAS_KEY = 'registrosVendas'; // CHAVE CORRETA
+let clientesCadastrados = []; // <-- NOVO: Array para guardar clientes
+const VENDAS_KEY = 'registrosVendas'; 
 const PRODUTOS_KEY = 'produtosCadastrados'; 
+const CLIENTES_KEY = 'clientes'; // <-- NOVO: Chave de clientes (do cadastro-de-clientes.js)
 
 function salvarVendas() {
     localStorage.setItem(VENDAS_KEY, JSON.stringify(vendas)); 
@@ -33,12 +35,17 @@ function salvarVendas() {
 function carregarDados() {
     const vendasSalvas = localStorage.getItem(VENDAS_KEY);
     const produtosSalvos = localStorage.getItem(PRODUTOS_KEY); 
+    const clientesSalvos = localStorage.getItem(CLIENTES_KEY); // <-- NOVO
 
     if (vendasSalvas) {
         vendas = JSON.parse(vendasSalvas);
     }
     if (produtosSalvos) {
         produtosCadastrados = JSON.parse(produtosSalvos); 
+    }
+    // NOVO: Carrega os clientes
+    if (clientesSalvos) {
+        clientesCadastrados = JSON.parse(clientesSalvos); 
     }
     if (!produtosCadastrados) {
         produtosCadastrados = [];
@@ -73,11 +80,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const pagamentoMaisUsadoNome = document.getElementById('pagamentoMaisUsadoNome');
     const pagamentoMaisUsadoContagem = document.getElementById('pagamentoMaisUsadoContagem');
     
-    // NOVO ELEMENTO DA TABELA DE FATURAMENTO MENSAL
+    // Elemento da Tabela de Faturamento Mensal
     const listaFaturamentoMensal = document.getElementById('listaFaturamentoMensal'); 
     
     carregarDados();
     preencherOpcoesProdutos();
+    preencherOpcoesClientes(); // <-- NOVO: Chama o preenchimento do datalist de clientes
     renderizarTabelaVendas();
     renderizarRanking();
     renderizarMesMaisVendedor();
@@ -91,6 +99,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // --- FUNÇÕES DE LÓGICA DE DADOS ---
+    
+    // NOVO: Preenche o datalist com os nomes dos clientes cadastrados
+    function preencherOpcoesClientes() {
+        const datalistClientes = document.getElementById('listaClientesCadastrados');
+        if (!datalistClientes) return;
+
+        datalistClientes.innerHTML = ''; 
+
+        if (clientesCadastrados && clientesCadastrados.length > 0) {
+            clientesCadastrados.forEach(cliente => {
+                const option = document.createElement('option');
+                option.value = cliente.nome;
+                datalistClientes.appendChild(option);
+            });
+        }
+    }
+
 
     function atualizarMesComBaseNaData() {
         const dataValor = vendaDataInput.value;
@@ -107,7 +132,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const precoUnitarioTexto = vendaPrecoUnitarioInput.value;
         const quantidade = parseFloat(vendaQuantidadeInput.value);
         
-        // CORRIGIDO: Usa removeMascara para obter um número limpo
         const precoNumerico = parseFloat(removeMascara(precoUnitarioTexto));
 
         if (isNaN(precoNumerico) || isNaN(quantidade) || quantidade <= 0) {
@@ -130,7 +154,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 option.textContent = produto.nome;
                 
                 option.dataset.id = produto.id;
-                // Garante que o preço unitário do produto seja usado para pré-preencher
                 option.dataset.preco = produto.precoUnitario; 
                 
                 vendaProdutoSelect.appendChild(option);
@@ -145,7 +168,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         if (selectedOption && selectedOption.value !== "") {
             const produtoId = selectedOption.dataset.id;
-            const precoVenda = parseFloat(selectedOption.dataset.preco); // Deve ser um número
+            const precoVenda = parseFloat(selectedOption.dataset.preco);
 
             vendaIDInput.value = produtoId || 'N/A';
             vendaPrecoUnitarioInput.value = formatarMoedaExibicao(precoVenda || 0);
@@ -190,11 +213,9 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
         
-        // Garante que o precoFinal seja calculado e atualiza o campo unitário
         vendaPrecoUnitarioInput.dispatchEvent(new Event('blur'));
 
         const precoFinal = calcularPrecoFinal();
-        // CORRIGIDO: Usa removeMascara no valor do campo para garantir que o número salvo seja limpo
         const precoUnitarioNumerico = parseFloat(removeMascara(vendaPrecoUnitarioInput.value));
         const precoFinalNumerico = precoFinal; 
         
@@ -210,10 +231,9 @@ document.addEventListener('DOMContentLoaded', () => {
             cliente: vendaClienteInput.value.trim() || 'N/A',
             produto: vendaProdutoSelect.options[vendaProdutoSelect.selectedIndex].textContent,
             id: vendaIDInput.value,
-            // ESSENCIAL: Salva como número, NÃO como string de moeda
             precoUnitario: precoUnitarioNumerico, 
             quantidade: parseFloat(vendaQuantidadeInput.value),
-            precoFinal: precoFinalNumerico, // ESSENCIAL: Salva como número
+            precoFinal: precoFinalNumerico, 
             metodoPagamento: vendaPagamentoSelect.value
         };
 
@@ -250,7 +270,7 @@ document.addEventListener('DOMContentLoaded', () => {
         vendas.forEach(venda => {
             if (venda.status === 'entrada') { 
                 const mesNumero = parseInt(venda.mes);
-                const faturamento = venda.precoFinal; // É um número
+                const faturamento = venda.precoFinal; 
 
                 if (faturamentoPorMes.hasOwnProperty(mesNumero)) {
                     faturamentoPorMes[mesNumero] += faturamento;
@@ -451,7 +471,6 @@ document.addEventListener('DOMContentLoaded', () => {
             
             const mesNome = MESES_NOMES[parseInt(item.mes) - 1] || 'N/A';
             
-            const statusCell = row.insertCell();
             const statusDiv = document.createElement('span');
             statusDiv.textContent = item.status.charAt(0).toUpperCase() + item.status.slice(1);
             
@@ -464,7 +483,10 @@ document.addEventListener('DOMContentLoaded', () => {
             let i = 0;
             row.insertCell(i++).textContent = item.data;
             row.insertCell(i++).textContent = mesNome;
-            row.insertCell(i++).textContent = statusCell.textContent; // Status (para ordenação)
+            
+            const statusCell = row.insertCell(i++);
+            statusCell.appendChild(statusDiv); // Status inserido corretamente
+            
             row.insertCell(i++).textContent = item.cliente || 'N/A';
             row.insertCell(i++).textContent = item.produto;
             row.insertCell(i++).textContent = item.id;
@@ -481,9 +503,6 @@ document.addEventListener('DOMContentLoaded', () => {
             btnRemover.classList.add('btn-remover');
             btnRemover.onclick = () => removerVenda(index);
             acoesCell.appendChild(btnRemover);
-
-            row.cells[2].innerHTML = ''; 
-            row.cells[2].appendChild(statusDiv);
         });
     }
 
