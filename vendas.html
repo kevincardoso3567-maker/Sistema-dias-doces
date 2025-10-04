@@ -27,9 +27,16 @@
 
                     <div class="input-group-vendas" style="flex-basis: 100%;">
                         <label for="vendaCliente">Nome do Cliente:</label>
-                        <input type="text" id="vendaCliente" placeholder="Opcional">
+                        <input 
+                            type="text" 
+                            id="vendaCliente" 
+                            list="listaClientesCadastrados" 
+                            placeholder="Selecione ou digite o nome"
+                        >
+                        
+                        <datalist id="listaClientesCadastrados">
+                            </datalist>
                     </div>
-                    
                     <div class="input-group-vendas">
                         <label for="vendaData">Data:</label>
                         <input type="date" id="vendaData" required>
@@ -122,7 +129,8 @@
                             <th>Data</th>
                             <th>Mês</th>
                             <th>Status</th>
-                            <th>Cliente</th> <th>Produto</th>
+                            <th>Cliente</th> 
+                            <th>Produto</th>
                             <th>ID</th>
                             <th>Preço Unitário</th>
                             <th>Quantidade</th>
@@ -132,7 +140,7 @@
                         </tr>
                     </thead>
                     <tbody id="listaVendas">
-                        </tbody>
+                    </tbody>
                 </table>
             </div>
             <button id="btnLimparVendas" class="btn-limpar">Limpar Tabela Vendas</button>
@@ -172,7 +180,7 @@
                         </tr>
                     </thead>
                     <tbody id="listaFaturamentoMensal">
-                        </tbody>
+                    </tbody>
                 </table>
             </div>
         </div>
