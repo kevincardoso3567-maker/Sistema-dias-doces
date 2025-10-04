@@ -14,6 +14,13 @@ body {
     margin: 20px auto;
     padding: 0 15px;
 }
+/* AUMENTO DE MARGEM/PADDING PARA TELAS PEQUENAS (Responsividade) */
+@media (max-width: 480px) {
+    .container {
+        padding: 0 10px;
+        margin: 10px auto;
+    }
+}
 
 /* ========================================================================= */
 /* HEADER */
@@ -28,14 +35,34 @@ body {
 }
 
 .header-logo-vendas {
-    height: 40px; /* Reduzi um pouco para ficar mais padrão */
+    height: 40px; 
     filter: invert(100%); 
 }
 
 .header-vendas h1 { 
     color: white;
-    font-size: 1.8em; /* Aumentei para destacar */
+    font-size: 1.8em; 
     margin: 0;
+}
+
+/* RESPONSIVIDADE DO HEADER */
+@media (max-width: 600px) {
+    .header-vendas {
+        flex-direction: column;
+        text-align: center;
+        padding: 15px 10px;
+    }
+    .header-vendas h1 {
+        font-size: 1.4em;
+        margin: 10px 0;
+    }
+    .header-logo-vendas {
+        height: 35px;
+    }
+    .btn-voltar {
+        width: 100%;
+        box-sizing: border-box;
+    }
 }
 
 /* Botão Voltar (Padrão da marca) */
@@ -70,7 +97,7 @@ body {
 .vendas-card h2, .ranking-card h2, .faturamento-card h2 { 
     color: #ffaa32; 
     margin-top: 0;
-    border-bottom: 2px solid #ffaa32; /* Engrossei o divisor */
+    border-bottom: 2px solid #ffaa32; 
     padding-bottom: 10px;
 }
 
@@ -87,7 +114,8 @@ body {
 
 .input-row-vendas { 
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* Mais flexível */
+    /* Ajuste para garantir que o min seja viável em telas menores */
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); 
     gap: 15px;
     align-items: end; 
     margin-bottom: 20px;
@@ -105,7 +133,7 @@ body {
     display: flex; 
     gap: 10px;
 }
-/* O campo de Cliente agora deve ocupar a linha inteira, se necessário */
+/* O campo de Cliente agora deve ocupar a linha inteira */
 .input-group-vendas[style*="grid-column: 1 / -1"] {
     grid-column: 1 / -1;
 }
@@ -118,7 +146,7 @@ body {
 
 .input-group-vendas input,
 .input-group-vendas select {
-    padding: 10px; /* Aumentei o padding */
+    padding: 10px; 
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 1em;
@@ -149,7 +177,7 @@ body {
 }
 
 .btn-adicionar {
-    background-color: #28a745; /* Cor verde para adicionar/selecionar */
+    background-color: #28a745; 
     color: white;
     padding: 10px 15px;
     border: none;
@@ -157,7 +185,7 @@ body {
     cursor: pointer;
     font-weight: bold;
     transition: background-color 0.3s;
-    height: 42px; /* Ajuste para alinhar com o input padrão */
+    height: 42px; 
     width: 100%;
 }
 
@@ -166,31 +194,49 @@ body {
 }
 
 /* Media Queries para Responsividade do Formulário */
-@media (max-width: 900px) {
+@media (max-width: 768px) {
+    /* Em tablets, mantemos 2 colunas */
     .input-row-vendas {
-        grid-template-columns: repeat(2, 1fr); 
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); 
     }
 }
-
-@media (max-width: 600px) {
+@media (max-width: 480px) {
+    /* Em celulares, voltamos a 1 coluna, exceto para o grupo Cliente */
     .input-row-vendas {
         grid-template-columns: 1fr; 
     }
+    .input-group-vendas[style*="grid-column: 1 / -1"] {
+        grid-column: auto; /* Permite que o Cliente ocupe 1 coluna, como os outros */
+    }
+    .input-group-vendas .cliente-selector-group {
+        flex-direction: column; /* Botão e campo de cliente em linhas separadas */
+    }
+    .btn-adicionar[style*="height: 42px"] {
+        height: auto;
+    }
 }
-
 
 /* ========================================================================= */
 /* TABELA DE VENDAS */
 /* ========================================================================= */
 .tabela-container {
     overflow-x: auto;
+    width: 100%;
 }
 
 #tabelaVendas, #tabelaFaturamentoMensal {
     width: 100%;
     border-collapse: collapse;
     margin-top: 15px;
-    min-width: 800px;
+    min-width: 800px; /* Mantém o min-width para evitar quebra de coluna em tela cheia */
+}
+
+/* RESPONSIVIDADE DA TABELA: Assegurada pelo min-width e overflow-x: auto no container */
+@media (max-width: 800px) {
+    /* Força o scroll horizontal em telas menores que 800px */
+    .tabela-container {
+        border: 1px solid #ddd;
+    }
 }
 
 #tabelaVendas th,
@@ -198,7 +244,7 @@ body {
 #tabelaFaturamentoMensal th,
 #tabelaFaturamentoMensal td {
     border: 1px solid #ddd;
-    padding: 12px 10px; /* Aumentei o padding */
+    padding: 12px 10px; 
     text-align: left;
     white-space: nowrap; 
 }
@@ -215,8 +261,8 @@ body {
     background-color: #d4edda; 
     color: #155724; 
     font-weight: bold;
-    padding: 4px 8px; /* Ajustei o padding */
-    border-radius: 15px; /* Mais arredondado */
+    padding: 4px 8px; 
+    border-radius: 15px; 
     font-size: 0.85em;
     display: inline-block;
 }
@@ -235,7 +281,7 @@ body {
 .btn-remover {
     background-color: #dc3545;
     color: white;
-    padding: 6px 12px; /* Aumentei o padding */
+    padding: 6px 12px; 
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -276,14 +322,27 @@ body {
     margin-bottom: 30px;
 }
 
+/* RESPONSIVIDADE DOS CARTÕES */
+@media (max-width: 768px) {
+    /* Em telas menores, os cards ficam empilhados */
+    .cartoes-destaque {
+        flex-direction: column;
+        gap: 15px;
+    }
+    .mes-destaque-card,
+    .pagamento-destaque-card {
+        max-width: 100%; /* Ocupa a largura total */
+    }
+}
+
 .mes-destaque-card,
 .pagamento-destaque-card {
     flex: 1; 
     max-width: 300px;
-    padding: 20px; /* Aumentei o padding */
+    padding: 20px; 
     color: white;
     text-align: center;
-    border-radius: 8px; /* Adicionei border-radius */
+    border-radius: 8px; 
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
     margin-bottom: 0; 
 }
@@ -304,14 +363,14 @@ body {
 /* Estilos de Texto Comuns */
 .mes-destaque-card h3,
 .pagamento-destaque-card h3 {
-    font-size: 1em; /* Ajustei para menor */
+    font-size: 1em; 
     margin: 0 0 5px 0;
     font-weight: 400;
 }
 
 #mesMaisVendeuNome,
 #pagamentoMaisUsadoNome {
-    font-size: 2em; /* Destaque maior */
+    font-size: 2em; 
     font-weight: bold;
     margin: 0;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
@@ -346,7 +405,7 @@ body {
 
 /* Estilos para o Nome do Produto (Título) */
 .ranking-titulo {
-    font-size: 1.1em; /* Ajustei para menor */
+    font-size: 1.1em; 
     font-weight: bold;
     margin-bottom: 0;
 }
@@ -361,7 +420,7 @@ body {
 
 /* Cores de Destaque para o Top 3 */
 .ranking-gold {
-    background-color: #fff8e1; /* Mais suave */
+    background-color: #fff8e1; 
     border-left: 4px solid gold;
 }
 .ranking-gold .ranking-titulo {
@@ -384,7 +443,7 @@ body {
 .modal {
     display: none; 
     position: fixed;
-    z-index: 2000; /* Z-index alto para garantir que fique acima de tudo */
+    z-index: 2000; 
     left: 0;
     top: 0;
     width: 100%;
@@ -397,7 +456,7 @@ body {
 .modal-content {
     background-color: #fefefe;
     margin: 5% auto; 
-    padding: 30px; /* Aumentei o padding */
+    padding: 30px; 
     border: 1px solid #ffaa32;
     width: 90%;
     max-width: 500px; 
@@ -405,6 +464,14 @@ body {
     box-shadow: 0 5px 25px rgba(0,0,0,0.4);
     position: relative;
     animation: fadeIn 0.3s;
+}
+
+/* RESPONSIVIDADE DO MODAL: Ajusta o padding em telas pequenas */
+@media (max-width: 550px) {
+    .modal-content {
+        padding: 20px;
+        margin: 10% auto;
+    }
 }
 
 /* Animação simples para a entrada do modal */
@@ -416,7 +483,7 @@ body {
 .close-btn {
     color: #aaa;
     float: right;
-    font-size: 32px; /* Maior para facilitar o clique */
+    font-size: 32px; 
     font-weight: bold;
     line-height: 1;
     position: absolute;
@@ -433,7 +500,7 @@ body {
 #modalListaClientes {
     max-height: 300px;
     overflow-y: auto;
-    border: 2px solid #ffaa32; /* Borda mais grossa */
+    border: 2px solid #ffaa32; 
     padding: 5px;
     margin-top: 15px;
     border-radius: 6px;
@@ -462,7 +529,7 @@ body {
     color: #ffaa32;
 }
 #modalListaClientes input[type="radio"]:checked {
-    accent-color: #ffaa32; /* Muda a cor do radio button */
+    accent-color: #ffaa32; 
 }
 
 #modalListaClientes input[type="radio"] {
