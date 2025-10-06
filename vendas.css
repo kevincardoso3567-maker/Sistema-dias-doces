@@ -35,8 +35,8 @@ body {
 }
 
 .header-logo-vendas {
-    height: 40px; 
-    filter: invert(100%); 
+    height: 60px; /* AJUSTE: Aumento do tamanho da logo */
+    /* filter: invert(100%);  <--- REMOVIDO: para exibir a imagem em suas cores originais */
 }
 
 .header-vendas h1 { 
@@ -57,7 +57,7 @@ body {
         margin: 10px 0;
     }
     .header-logo-vendas {
-        height: 35px;
+        height: 50px; /* AJUSTE: Mantém um bom tamanho em telas menores */
     }
     .btn-voltar {
         width: 100%;
@@ -201,7 +201,7 @@ body {
     }
 }
 @media (max-width: 480px) {
-    /* Em celulares, voltamos a 1 coluna, exceto para o grupo Cliente */
+    /* Em celulares, voltamos a 1 coluna */
     .input-row-vendas {
         grid-template-columns: 1fr; 
     }
@@ -213,6 +213,11 @@ body {
     }
     .btn-adicionar[style*="height: 42px"] {
         height: auto;
+    }
+    /* NOVO AJUSTE: Garante espaçamento para botões de altura variável */
+    #formAdicionarVenda button[type="submit"] {
+        margin-top: 10px;
+        height: auto; 
     }
 }
 
@@ -323,7 +328,7 @@ body {
 }
 
 /* RESPONSIVIDADE DOS CARTÕES */
-@media (max-width: 768px) {
+@media (max-width: 650px) { /* AJUSTE: Empilha os cartões mais cedo */
     /* Em telas menores, os cards ficam empilhados */
     .cartoes-destaque {
         flex-direction: column;
